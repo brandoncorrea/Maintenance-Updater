@@ -1,0 +1,742 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Configuration>
+  <Format>
+    <Identifier length="4" />
+    <Line id="SKU" >
+      <Field name="OP" length="1"/>
+      <Field name="APPLY_ERROR" length="6"/>
+      <Field name="SKU" length="13"/>
+      <Field name="PRIMARY_SUPPLIER" length="8"/>
+      <Field name="CATEGORY_CODE" length="8"/>
+      <Field name="REPORT_CODE" length="6"/>
+      <Field name="CYCLE_GROUP" length="8"/>
+      <Field name="DEPT_NUMBER" length="4"/>
+      <Field name="PROMO_TYPE" length="2"/>
+      <Field name="SKU_TERM_CRLF" length="2"/>
+    </Line>
+    <Line id="ITEM" >
+      <Field name="OP" length="1"/>
+      <Field name="APPLY_ERROR" length="6"/>
+      <Field name="SKU" length="13"/>
+      <Field name="ITEM_ID" length="13"/>
+      <Field name="MIX_MATCH_NUMBER" length="2"/>
+      <Field name="LINK_CODE" length="13"/>
+      <Field name="COOL_LIST_ID" length="6"/>
+      <Field name="COOL_TEXT_ID" length="6"/>
+      <Field name="COOL_CLASS" length="4"/>
+      <Field name="COOL_PRETEXT_ID" length="6"/>
+      <Field name="ITEM_TERM_CRLF" length="2"/>
+    </Line>
+    <Line id="FAMY">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="FAMILY_GROUP" length="8" />
+      <Field name="FAMILY_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="PACK">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="PACK_ID" length="13" />
+      <Field name="PACK_TYPE" length="1" />
+      <Field name="PACK_QTY" length="4" />
+      <Field name="PACK_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="ITML">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="ITEM_ID" length="13" />
+      <Field name="LOCATION" length="1" />
+      <Field name="FORM_ID_1" length="10" />
+      <Field name="ITEMLOC_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="SPCK">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="PACK_ID" length="13" />
+      <Field name="PACK_TYPE" length="1" />
+      <Field name="PACK_QTY" length="4" />
+      <Field name="SUPPLIER_NUMBER" length="8" />
+      <Field name="ORDER_GROUP" length="4" />
+      <Field name="ALLOW_GROUP" length="8" />
+      <Field name="SUPPACK_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="CASE">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="CASE_ID" length="13" />
+      <Field name="PACK_ID" length="13" />
+      <Field name="PACK_TYPE" length="1" />
+      <Field name="PACK_QTY" length="4" />
+      <Field name="CASEID_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="CATG">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="CATEGORY_CODE" length="8" />
+      <Field name="FAMILY_GROUP" length="8" />
+      <Field name="CATEGORY_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="COMP">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="SKU" length="13" />
+      <Field name="PACK_ID" length="13" />
+      <Field name="PACK_TYPE" length="1" />
+      <Field name="PACK_QTY" length="4" />
+      <Field name="COMP_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="CLAS">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="COOL_CLASS" length="4" />
+      <Field name="COOLCLASS_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="COOL">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="COOL_TEXT_ID" length="6" />
+      <Field name="COOLTEXT_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="TLST">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="COOL_LIST_ID" length="6" />
+      <Field name="COOL_TEXT_ID" length="6" />
+      <Field name="COOL_CLASS" length="4" />
+      <Field name="COOLTEXTLIST_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="CNT">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="COUNT_ID" length="6" />
+      <Field name="COUNT_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="CNTY">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="COUNTRY_CODE" length="4" />
+      <Field name="COOL_CLASS" length="4" />
+      <Field name="LOCATION_NUMBER" length="2" />
+      <Field name="COUNTRY_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="CYCL">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="CYCLE_GROUP" length="9" />
+      <Field name="CYCLE_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="DEPT">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="DEPT_NUMBER" length="4" />
+      <Field name="MAJDEPT_NUMBER" length="4" />
+      <Field name="DEPT_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="FORM">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="FORM_ID" length="10" />
+      <Field name="STOCK_ID" length="10" />
+      <Field name="FORM_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="GRAD">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="MESG_NUM" length="2" />
+      <Field name="GRADE_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="GRPH">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="GRAPHIC_NUMBER" length="6" />
+      <Field name="GRAPHIC_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="GRHD">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="SUPPLIER_NUMBER" length="8" />
+      <Field name="GRPALLHD_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="GRP">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="SUPPLIER_NUMBER" length="8" />
+      <Field name="ALLOW_GROUP" length="8" />
+      <Field name="GRPALLOW_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="HOUR">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="EFFECTIVE_DATE" length="8" />
+      <Field name="HOURS_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="INGR">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="INGREDIENT_NUMBER" length="6" />
+      <Field name="INGREDIENT_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="LBLM">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="MESG_NUM" length="6" />
+      <Field name="LBLMESG_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="LIKE">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="LIKE_CODE" length="3" />
+      <Field name="LBLMESG_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="MAJD">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="MAJDEPT_NUMBER" length="4" />
+      <Field name="MAJDEPT_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="MIXM">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="MIX_MATCH_NUMBER" length="3" />
+      <Field name="MIXMATCH_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="NUTR">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="NUTRIFACT_NUMBER" length="6" />
+      <Field name="NUTRIFACT_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="OFFR">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="MESG_NUM" length="6" />
+      <Field name="OFFER_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="ORDG">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="SUPPLIER_NUMBER" length="8" />
+      <Field name="ORDER_GROUP" length="4" />
+      <Field name="ORDGRP_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="PERI">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="PERIOD_TYPE" length="1" />
+      <Field name="END_DATE" length="8" />
+      <Field name="PERIOD_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="PKG">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="PACK_ID" length="13" />
+      <Field name="PACK_TYPE" length="1" />
+      <Field name="PACK_QTY" length="4" />
+      <Field name="SUPPLIER_NUMBER" length="8" />
+      <Field name="PKGALLOW_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="POLL">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="SUPPLIER_NUMBER" length="7" />
+      <Field name="MUST_ORDGRP_1" length="2" />
+      <Field name="MUST_ORDGRP_2" length="2" />
+      <Field name="MUST_ORDGRP_3" length="2" />
+      <Field name="MUST_ORDGRP_4" length="2" />
+      <Field name="MUST_ORDGRP_5" length="2" />
+      <Field name="MUST_ORDGRP_6" length="2" />
+      <Field name="MUST_ORDGRP_7" length="2" />
+      <Field name="MUST_ORDGRP_8" length="2" />
+      <Field name="MUST_ORDGRP_9" length="2" />
+      <Field name="MUST_ORDGRP_10" length="2" />
+      <Field name="MUST_NOT_ORDGRP_1" length="2" />
+      <Field name="MUST_NOT_ORDGRP_2" length="2" />
+      <Field name="MUST_NOT_ORDGRP_3" length="2" />
+      <Field name="MUST_NOT_ORDGRP_4" length="2" />
+      <Field name="MUST_NOT_ORDGRP_5" length="2" />
+      <Field name="MUST_NOT_ORDGRP_6" length="2" />
+      <Field name="MUST_NOT_ORDGRP_7" length="2" />
+      <Field name="MUST_NOT_ORDGRP_8" length="2" />
+      <Field name="MUST_NOT_ORDGRP_9" length="2" />
+      <Field name="MUST_NOT_ORDGRP_10" length="2" />
+      <Field name="ALLOWED_ORDGRP_1" length="2" />
+      <Field name="ALLOWED_ORDGRP_2" length="2" />
+      <Field name="ALLOWED_ORDGRP_3" length="2" />
+      <Field name="ALLOWED_ORDGRP_4" length="2" />
+      <Field name="ALLOWED_ORDGRP_5" length="2" />
+      <Field name="ALLOWED_ORDGRP_6" length="2" />
+      <Field name="ALLOWED_ORDGRP_7" length="2" />
+      <Field name="ALLOWED_ORDGRP_8" length="2" />
+      <Field name="ALLOWED_ORDGRP_9" length="2" />
+      <Field name="ALLOWED_ORDGRP_10" length="2" />
+      <Field name="POLL_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="PROMO">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="PROMO_TYPE" length="2" />
+      <Field name="PROMO_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="REAS">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="REASON" length="3" />
+      <Field name="REASON_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="RECP">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="MESG-NUM" length="6" />
+      <Field name="RECIPE_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="RPRT">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="REPORT_CODE" length="6" />
+      <Field name="REPORT_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="SCAD">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="MESG_NUM" length="2" />
+      <Field name="SCALEAD_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="SLOC">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="LOCATION_NUMBER" length="6" />
+      <Field name="SCALELOC_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="SPLU">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="ITEM_ID" length="13" />
+      <Field name="PLU_NUM" length="6" />
+      <Field name="LOCATION_NUMBER" length="6" />
+      <Field name="INGREDIENT_NUMBER" length="6" />
+      <Field name="COOL_LIST_ID" length="6" />
+      <Field name="COOL_TEXT_ID" length="6" />
+      <Field name="SCALEPLU_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="STCK">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="STOCK_ID" length="10" />
+      <Field name="STOCK_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="STOR">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="STORE_NUMBER" length="6" />
+      <Field name="STORE_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="SUPL">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="SUPPLIER_NUMBER" length="8" />
+      <Field name="SUPPLIER_TERM_CRLF" length="2" />
+    </Line>
+    <Line id="USER">
+      <Field name="OP" length="1" />
+      <Field name="APPLY_ERROR" length="6" />
+      <Field name="USER_NAME" length="8" />
+      <Field name="MODEL_1" length="8" />
+      <Field name="MODEL_2" length="8" />
+      <Field name="MODEL_3" length="8" />
+      <Field name="MODEL_4" length="8" />
+      <Field name="MODEL_5" length="8" />
+      <Field name="USER_TERM_CRLF" length="2" />
+    </Line>
+  </Format>
+  <ApplyError>
+    <Code id="000001" description="Update data not found, referential integrity error." />
+    <Code id="000002" description="Recursively defined composition would result." />
+    <Code id="000003" description="Can't add composition record, sku_type for associated sku is not 'C'" />
+    <Code id="000004" description="Invalid link code." />
+    <Code id="000005" description="Invalid price info in link item." />
+    <Code id="000006" description="Authorization record has an invalid entry (not a Y, N, or R) depending on the type of permission." />
+    <Code id="000007" description="User is attempting to &quot;RPL&quot; a record and it did not exist previously." />
+    <Code id="000008" description="User is attempting to &quot;DEL&quot; a record and it did not exist previously." />
+    <Code id="000009" description="User is attempting to &quot;ADD&quot; a record which already exists." />
+    <Code id="000010" description="Can't apply due to the code in reason." />
+    <Code id="000011" description="SKU doesn't exist for item record." />
+    <Code id="000012" description="Item doesn't exist for itemloc record." />
+    <Code id="000013" description="Item doesn't exist for suppack record." />
+    <Code id="000014" description="SKU doesn't exist for suppack record." />
+    <Code id="000015" description="Item doesn't exist for scaleplu record." />
+    <Code id="000016" description="Supplier package does not exist." />
+    <Code id="000017" description="Maximum number of allowance records." />
+    <Code id="000018" description="Max number of supplier packages exceeded." />
+    <Code id="000022" description="A record that this record depends on failed." />
+    <Code id="000023" description="Can't add/upd poll schedule, order group is both allowed and not allowed." />
+    <Code id="000030" description="PLU num/location number can not change." />
+    <Code id="000031" description="Duplicate PLU num/location number." />
+    <Code id="000032" description="Invalid host text record type." />
+    <Code id="000034" description="Can't replace count record - already built." />
+    <Code id="000035" description="Purchase orders exist for supplier." />
+    <Code id="000037" description="Duplicate host department number" />
+    <Code id="000038" description="New backroom area text already exists" />
+    <Code id="000039" description="The effective date must be greater than the current date" />
+    <Code id="090076" description="The predict record cannot be added because the begin date is equal to or before the current date." />
+    <Code id="090077" description="Can't add allowance, begin date after end date." />
+    <Code id="090078" description="Can't add period, begin date after end date." />
+    <Code id="090079" description="Can't add calperiod, begin date after end date." />
+    <Code id="090080" description="The predict record cannot be added because the begin date is after the end date." />
+    <Code id="090121" description="Can't add supplier, duns already exists." />
+    <Code id="090124" description="Can't update supplier, duns already linked to another supplier." />
+    <Code id="107001" description="Quantity prohibit and quantity required cannot both be set." />
+    <Code id="107004" description="Bottle deposit can't be greater than $99.99 or less than zero." />
+    <Code id="107005" description="The POS description is mandatory." />
+    <Code id="107006" description="Retail price can't be greater than $99,999.99 or less than zero." />
+    <Code id="107007" description="Target margin can't exceed 999.99%." />
+    <Code id="107008" description="Unit of measure factor can't be greater than 99,999.999 or less than zero." />
+    <Code id="107009" description="Discount amount can't be greater than $99.99 or less than zero." />
+    <Code id="107010" description="Excise tax amount can't be greater than $999.99 or less than zero." />
+    <Code id="107011" description="Tax exemption can't be greater than $999.99 or less than zero." />
+    <Code id="107012" description="Discount percent can't be greater than 99.99% or less than zero." />
+    <Code id="107013" description="Bill price can't exceed $99,999.99 or be less than zero." />
+    <Code id="107014" description="Type mismatch in the ITEMRULE checks." />
+    <Code id="107015" description="Type mismatch in the ITEMRULE checks." />
+    <Code id="107016" description="Type mismatch in the ITEMRULE checks." />
+    <Code id="107017" description="Overflow occurred when setting a numeric field in ITEMRULE." />
+    <Code id="107020" description="Cannot change the SKU type. A COMPOSITION record is associated with the SKU." />
+    <Code id="100001" description="Referencing a non-existing record" />
+    <Code id="100002" description="Being referenced by another table" />
+    <Code id="100003" description="Cycle group doesn't exist" />
+    <Code id="100004" description="Being referenced by sku records" />
+    <Code id="100005" description="Hostkey record doesn't exist" />
+    <Code id="100006" description="Being referenced by hostdata records" />
+    <Code id="100007" description="Hostdata record doesn't exist" />
+    <Code id="100008" description="Being referenced by host allowance record" />
+    <Code id="100009" description="Hostdata record doesn't exist" />
+    <Code id="100010" description="Being referenced by host count record" />
+    <Code id="100011" description="Hostdata record doesn't exist" />
+    <Code id="100012" description="Being referenced by host item record" />
+    <Code id="100013" description="Hostdata record doesn't exist" />
+    <Code id="100014" description="Being referenced by host item location record" />
+    <Code id="100015" description="Hostdata record doesn't exist" />
+    <Code id="100016" description="Being referenced by host item miscellaneous record" />
+    <Code id="100017" description="Hostdata record doesn't exist" />
+    <Code id="100018" description="Being referenced by host miscellaneous record" />
+    <Code id="100019" description="Hostdata record doesn't exist" />
+    <Code id="100020" description="Being referenced by host nutrifact record" />
+    <Code id="100021" description="Hostdata record doesn't exist" />
+    <Code id="100022" description="Being referenced by host scaleplu record" />
+    <Code id="100023" description="Hostdata record doesn't exist" />
+    <Code id="100024" description="Beign referenced by host sku record" />
+    <Code id="100025" description="Hostdata record doesn't exist" />
+    <Code id="100026" description="Being referenced by host suppack record" />
+    <Code id="100027" description="Hostdata record doesn't exist" />
+    <Code id="100028" description="Being referenced by host supplier record" />
+    <Code id="100029" description="Hostdata record doesn't exist" />
+    <Code id="100030" description="Being referenced by host text record" />
+    <Code id="100031" description="Adjustment record doesn't exist" />
+    <Code id="100032" description="Being referenced by adjustment line records" />
+    <Code id="100033" description="Count batch doesn't exist" />
+    <Code id="100034" description="Being referenced by count line records" />
+    <Code id="100035" description="Journal record doesn't exist" />
+    <Code id="100036" description="Being referenced by journal line records" />
+    <Code id="100037" description="Period doesn't exist" />
+    <Code id="100038" description="Being referenced by sky balance records" />
+    <Code id="100039" description="Period doesn't exist" />
+    <Code id="100040" description="Being referenced by sku period records" />
+    <Code id="100041" description="Major department doesn't exist" />
+    <Code id="100042" description="Being referenced by department records" />
+    <Code id="100043" description="Supplier doesn't exist" />
+    <Code id="100044" description="Being referenced by group allow header records" />
+    <Code id="100045" description="Group allow header doesn't exist" />
+    <Code id="100046" description="Being referenced by group allow records" />
+    <Code id="100047" description="Invoice doesn't exist" />
+    <Code id="100048" description="Being referenced by invoice aggregate records" />
+    <Code id="100049" description="Invoice doesn't exist" />
+    <Code id="100050" description="Being referenced by invoice line records" />
+    <Code id="100051" description="Invoice doesn't exist" />
+    <Code id="100052" description="Being referenced by invoice purchase order records" />
+    <Code id="100053" description="Supplier doesn't exist" />
+    <Code id="100054" description="Being referenced by order group records" />
+    <Code id="100055" description="Supplier doesn't exist" />
+    <Code id="100056" description="Being referenced by poll records" />
+    <Code id="100057" description="Purchase order doesn't exist" />
+    <Code id="100058" description="Being referenced by purchase order line records" />
+    <Code id="100059" description="Transfer doesn't exist" />
+    <Code id="100060" description="Being referenced by transfer line records" />
+    <Code id="100061" description="Authorization model doesn't exist for model 1" />
+    <Code id="100062" description="Being referenced by user records (model 1)" />
+    <Code id="100063" description="Authorization model doesn't exist for model 2" />
+    <Code id="100064" description="Being referenced by user records (model 2)" />
+    <Code id="100065" description="Authorization model doesn't exist for model 3" />
+    <Code id="100066" description="Being referenced by user records (model 3)" />
+    <Code id="100067" description="Authorization model doesn't exist for model 4" />
+    <Code id="100068" description="Being referenced by user records (model 4)" />
+    <Code id="100069" description="Authorization model doesn't exist for model 5" />
+    <Code id="100070" description="Being referenced by user records (model 5)" />
+    <Code id="100071" description="Department doesn't exist for dept 1" />
+    <Code id="100072" description="Being referenced by supplier records (dept 1)" />
+    <Code id="100073" description="Department doesn't exist for dept 2" />
+    <Code id="100074" description="Being referenced by supplier records (dept 2)" />
+    <Code id="100075" description="Department doesn't exist for dept 3" />
+    <Code id="100076" description="Being referenced by supplier records (dept 3)" />
+    <Code id="100077" description="Department doesn't exist for dept 4" />
+    <Code id="100078" description="Being referenced by supplier records (dept 4)" />
+    <Code id="100079" description="Department doesn't exist for dept 5" />
+    <Code id="100080" description="Being referenced by supplier records (dept 5)" />
+    <Code id="100081" description="Department doesn't exist for dept 6" />
+    <Code id="100082" description="Being referenced by supplier records (dept 6)" />
+    <Code id="100083" description="Department doesn't exist for dept 7" />
+    <Code id="100084" description="Being referenced by supplier records (dept 7)" />
+    <Code id="100085" description="Category code doesn't exist" />
+    <Code id="100086" description="Being referenced by sky records" />
+    <Code id="100087" description="Report code doesn't exist" />
+    <Code id="100088" description="Being referenced by sku records" />
+    <Code id="100089" description="Department doesn't exist" />
+    <Code id="100090" description="Being referenced by sku records (dept)" />
+    <Code id="100091" description="Rec. department doesn't exist" />
+    <Code id="100092" description="Being referenced by sku records (rec_dept)" />
+    <Code id="100093" description="Supplier doesn't exist" />
+    <Code id="100094" description="Being referenced by sky records" />
+    <Code id="100095" description="Promo type doesn't exist" />
+    <Code id="100096" description="Being referenced by sku records" />
+    <Code id="100097" description="Sku doesn't exist" />
+    <Code id="100098" description="Being referenced by item records" />
+    <Code id="100099" description="Mix match doesn't exist" />
+    <Code id="100100" description="Being referenced by item records" />
+    <Code id="100101" description="Like code 1 doesn't exist" />
+    <Code id="100102" description="Being referenced by item records (like 1)" />
+    <Code id="100103" description="Link code doesn't exist" />
+    <Code id="100104" description="Being referenced by item records (link code)" />
+    <Code id="100105" description="Item doesn't exist" />
+    <Code id="100106" description="Being referenced by scaleplu records" />
+    <Code id="100107" description="Scale location doesn't exist" />
+    <Code id="100108" description="Being referenced by scaleplu records" />
+    <Code id="100109" description="Ingredient doesn't exist" />
+    <Code id="100110" description="Being referenced by scaleplu records" />
+    <Code id="100111" description="Nutrifact doesn't exist" />
+    <Code id="100112" description="Being referenced by scaleplu records" />
+    <Code id="100113" description="Graphic doesn't exist for graphic 1" />
+    <Code id="100114" description="Being referenced by scaleplu records (graphic 1)" />
+    <Code id="100115" description="Graphic doesn't exist for graphic 2" />
+    <Code id="100116" description="Being referenced by scaleplu records (graphic 2)" />
+    <Code id="100117" description="Graphic doesn't exist for graphic 3" />
+    <Code id="100118" description="Being referenced by scaleplu records (graphic 3)" />
+    <Code id="100119" description="Sku doesn't exist" />
+    <Code id="100120" description="Being referenced by package records" />
+    <Code id="100121" description="Item doesn't exist" />
+    <Code id="100122" description="Being referenced by package records" />
+    <Code id="100123" description="Package doesn't exist" />
+    <Code id="100124" description="Being referenced by case id records" />
+    <Code id="100125" description="Supplier doesn't exist" />
+    <Code id="100126" description="Being referenced by supplier package records" />
+    <Code id="100127" description="Package doesn't exist" />
+    <Code id="100128" description="Being referenced by supplier package records" />
+    <Code id="100129" description="Order group doesn't exist" />
+    <Code id="100130" description="Being referenced by supplier package records" />
+    <Code id="100131" description="Group allow header doesn't exist" />
+    <Code id="100132" description="Being referenced by supplier package records" />
+    <Code id="100133" description="Supplier package doesn't exist" />
+    <Code id="100134" description="Being referenced by package allowance records" />
+    <Code id="100135" description="Sku doesn't exist" />
+    <Code id="100136" description="Being referenced by composition records" />
+    <Code id="100137" description="Package doesn't exist" />
+    <Code id="100138" description="Being referenced by composition records" />
+    <Code id="100139" description="Purchase order doesn't exist" />
+    <Code id="100140" description="Being referenced by invoice purchase order records" />
+    <Code id="100141" description="Invoice line doesn't exist" />
+    <Code id="100142" description="Being referenced by purchase order adjustment records" />
+    <Code id="100143" description="Purchase order line doesn't exist" />
+    <Code id="100144" description="Being referenced by purchase order adjustment records" />
+    <Code id="100145" description="Order group doesn't exist for must order group 1" />
+    <Code id="100146" description="Being referenced by poll records (must order group 1)" />
+    <Code id="100147" description="Order group doesn't exist for must order group 2" />
+    <Code id="100148" description="Being referenced by poll records (must order group 2)" />
+    <Code id="100149" description="Order group doesn't exist for must order group 3" />
+    <Code id="100150" description="Being referenced by poll records (must order group 3)" />
+    <Code id="100151" description="Order group doesn't exist for must order group 4" />
+    <Code id="100152" description="Being referenced by poll records (must order group 4)" />
+    <Code id="100153" description="Order group doesn't exist for must order group 5" />
+    <Code id="100154" description="Being referenced by poll records (must order group 5)" />
+    <Code id="100155" description="Order group doesn't exist for must order group 6" />
+    <Code id="100156" description="Being referenced by poll records (must order group 6)" />
+    <Code id="100157" description="Order group doesn't exist for must order group 7" />
+    <Code id="100158" description="Being referenced by poll records (must order group 7)" />
+    <Code id="100159" description="Order group doesn't exist for must order group 8" />
+    <Code id="100160" description="Being referenced by poll records (must order group 8)" />
+    <Code id="100161" description="Order group doesn't exist for must order group 9" />
+    <Code id="100162" description="Being referenced by poll records (must order group 9)" />
+    <Code id="100163" description="Order group doesn't exist for must order group 10" />
+    <Code id="100164" description="Being referenced by poll records (must order group 10)" />
+    <Code id="100165" description="Order group doesn't exist for must not order group 1" />
+    <Code id="100166" description="Being referenced by poll records (not must order group 1)" />
+    <Code id="100167" description="Order group doesn't exist for must not order group 2" />
+    <Code id="100168" description="Being referenced by poll records (not must order group 2)" />
+    <Code id="100169" description="Order group doesn't exist for must not order group 3" />
+    <Code id="100170" description="Being referenced by poll records (not must order group 3)" />
+    <Code id="100171" description="Order group doesn't exist for must not order group 4" />
+    <Code id="100172" description="Being referenced by poll records (not must order group 4)" />
+    <Code id="100173" description="Order group doesn't exist for must not order group 5" />
+    <Code id="100174" description="Being referenced by poll records (not must order group 5)" />
+    <Code id="100175" description="Order group doesn't exist for must not order group 6" />
+    <Code id="100176" description="Being referenced by poll records (not must order group 6)" />
+    <Code id="100177" description="Order group doesn't exist for must not order group 7" />
+    <Code id="100178" description="Being referenced by poll records (not must order group 7)" />
+    <Code id="100179" description="Order group doesn't exist for must not order group 8" />
+    <Code id="100180" description="Being referenced by poll records (not must order group 8)" />
+    <Code id="100181" description="Order group doesn't exist for must not order group 9" />
+    <Code id="100182" description="Being referenced by poll records (not must order group 9)" />
+    <Code id="100183" description="Order group doesn't exist for must not order group 10" />
+    <Code id="100184" description="Being referenced by poll records (not must order group 10)" />
+    <Code id="100185" description="Order group doesn't exist for allowed order group 1" />
+    <Code id="100186" description="Being referenced by poll records (allowed order group 1)" />
+    <Code id="100187" description="Order group doesn't exist for allowed order group 2" />
+    <Code id="100188" description="Being referenced by poll records (allowed order group 2)" />
+    <Code id="100189" description="Order group doesn't exist for allowed order group 3" />
+    <Code id="100190" description="Being referenced by poll records (allowed order group 3)" />
+    <Code id="100191" description="Order group doesn't exist for allowed order group 4" />
+    <Code id="100192" description="Being referenced by poll records (allowed order group 4)" />
+    <Code id="100193" description="Order group doesn't exist for allowed order group 5" />
+    <Code id="100194" description="Being referenced by poll records (allowed order group 5)" />
+    <Code id="100195" description="Order group doesn't exist for allowed order group 6" />
+    <Code id="100196" description="Being referenced by poll records (allowed order group 6)" />
+    <Code id="100197" description="Order group doesn't exist for allowed order group 7" />
+    <Code id="100198" description="Being referenced by poll records (allowed order group 7)" />
+    <Code id="100199" description="Order group doesn't exist for allowed order group 8" />
+    <Code id="100200" description="Being referenced by poll records (allowed order group 8)" />
+    <Code id="100201" description="Order group doesn't exist for allowed order group 9" />
+    <Code id="100202" description="Being referenced by poll records (allowed order group 9)" />
+    <Code id="100203" description="Order group doesn't exist for allowed order group 10" />
+    <Code id="100204" description="Being referenced by poll records (allowed order group 10)" />
+    <Code id="100205" description="Item doesn't exist" />
+    <Code id="100206" description="Being referenced by item location records" />
+    <Code id="100207" description="Family doesn't exist" />
+    <Code id="100208" description="Being referenced by category records" />
+    <Code id="100209" description="Supplier doesn't exist" />
+    <Code id="100210" description="Being referenced by backroom records" />
+    <Code id="100211" description="Supplier doesn't exist" />
+    <Code id="100212" description="Being referenced by purchase order records" />
+    <Code id="100213" description="Poll doesn't exist" />
+    <Code id="100214" description="Being referenced by purchase order records" />
+    <Code id="100215" description="Audit session record doesn't exist" />
+    <Code id="100216" description="Being referenced by audit records" />
+    <Code id="100217" description="Audit record doesn't exist" />
+    <Code id="100218" description="Being referenced by audit item record" />
+    <Code id="100219" description="Audit record doesn't exist" />
+    <Code id="100220" description="Being referenced by audit sku record" />
+    <Code id="100221" description="Audit record doesn't exist" />
+    <Code id="100222" description="Being referenced by audit scale plu record" />
+    <Code id="100223" description="Stock doesn't exist" />
+    <Code id="100224" description="Being referenced by form records" />
+    <Code id="100225" description="Form doesn't exist for form ID 1" />
+    <Code id="100226" description="Being referenced by item location records (form ID 1)" />
+    <Code id="100227" description="Form doesn't exist for form ID 2" />
+    <Code id="100228" description="Being referenced by item location records (form ID 2)" />
+    <Code id="100229" description="Form doesn't exist for form ID 3" />
+    <Code id="100230" description="Being referenced by item location records (form ID 3)" />
+    <Code id="100231" description="Form doesn't exist for form ID 4" />
+    <Code id="100232" description="Being referenced by item location records (form ID 4)" />
+    <Code id="100233" description="Form doesn't exist for form ID 5" />
+    <Code id="100234" description="Being referenced by item location records (form ID 5)" />
+    <Code id="100235" description="Mix match doesn't exist" />
+    <Code id="100236" description="Being referenced by item records" />
+    <Code id="100237" description="Invoice aggregate doesn't exist" />
+    <Code id="100238" description="Being referenced by invoice line records" />
+    <Code id="100239" description="Invoice aggregate doesn't exist" />
+    <Code id="100240" description="Being referenced by invoice aggregate records" />
+    <Code id="100241" description="Like code 2 doesn't exist" />
+    <Code id="100242" description="Being referenced by item records (like 2)" />
+    <Code id="100243" description="Like code 3 doesn't exist" />
+    <Code id="100244" description="Being referenced by item records (like 3)" />
+    <Code id="100245" description="Like code 4 doesn't exist" />
+    <Code id="100246" description="Being referenced by item records (like 4)" />
+    <Code id="100247" description="Like code 5 doesn't exist" />
+    <Code id="100248" description="Being referenced by item records (like 5)" />
+    <Code id="100249" description="Charity doesn't exist for charity number" />
+    <Code id="100250" description="Being referenced by donation records" />
+    <Code id="100251" description="Donation doesn't exist" />
+    <Code id="100252" description="Being referenced by donation line records" />
+    <Code id="100253" description="Exception leve3l doesn't exist" />
+    <Code id="100254" description="Being referenced by exception level records" />
+    <Code id="100255" description="Calevent id doesn't exist" />
+    <Code id="100256" description="Being referenced by calendar event records" />
+    <Code id="100257" description="Store number doesn't exist" />
+    <Code id="100258" description="Being referenced by user records" />
+    <Code id="100259" description="Cutting test record doesn't exist" />
+    <Code id="100260" description="Being referenced by cutting test line records" />
+    <Code id="100261" description="Cool list id doesn't exist" />
+    <Code id="100262" description="Being referenced by item records" />
+    <Code id="100263" description="Cool text id doesn't exist" />
+    <Code id="100264" description="Being referenced by item records (cool text id)" />
+    <Code id="100265" description="Cool class doesn't exist" />
+    <Code id="100266" description="Being referenced by item records" />
+    <Code id="100267" description="Cool pretext id doesn't exist" />
+    <Code id="100268" description="Being referenced by item records (cool pretext id)" />
+    <Code id="100269" description="Cool list id doesn't exist" />
+    <Code id="100270" description="Being referenced by scaleplu records" />
+    <Code id="100271" description="Cool text id doesn't exist" />
+    <Code id="100272" description="Being referenced by scaleplu records" />
+    <Code id="100273" description="Cool class doesn't exist" />
+    <Code id="100274" description="Being referenced by cool list records" />
+    <Code id="100275" description="Cool list id doesn't exist" />
+    <Code id="100276" description="Being referenced by cool text list records" />
+    <Code id="100277" description="Cool text id doesn't exist" />
+    <Code id="100278" description="Being referenced by cool text list records" />
+    <Code id="100279" description="Literal id doesn't exist" />
+    <Code id="100280" description="Being referenced by literal class records" />
+    <Code id="100281" description="Cool class doesn't exist" />
+    <Code id="100282" description="Being referenced by literal class records" />
+    <Code id="100283" description="Literal id doesn't exist" />
+    <Code id="100284" description="Being referenced by literal location records" />
+    <Code id="100285" description="Scale location doesn't exist" />
+    <Code id="100286" description="Being referenced by literal location records" />
+    <Code id="100287" description="Country code doesn't exist" />
+    <Code id="100288" description="Being referenced by country class records" />
+    <Code id="100289" description="Cool class doesn't exist" />
+    <Code id="100290" description="Being referenced by country class records" />
+    <Code id="100291" description="Country record doesn't exist" />
+    <Code id="100292" description="Being referenced by country location records" />
+    <Code id="100293" description="Scale location doesn't exist" />
+    <Code id="100294" description="Being referenced by country location records" />
+    <Code id="100295" description="Invoice line doesn't exist" />
+    <Code id="100296" description="Being referenced by invoice cool records" />
+    <Code id="100297" description="Department doesn't exist for dept 8" />
+    <Code id="100298" description="Being referenced by supplier records (dept 8)" />
+    <Code id="100299" description="Department doesn't exist for dept 9" />
+    <Code id="100300" description="Being referenced by supplier records (dept 9)" />
+    <Code id="100301" description="Department doesn't exist for dept 10" />
+    <Code id="100302" description="Being referenced by supplier records (dept 10)" />
+    <Code id="100303" description="Department doesn't exist for dept 11" />
+    <Code id="100304" description="Being referenced by supplier records (dept 11)" />
+    <Code id="100305" description="Department doesn't exist for dept 12" />
+    <Code id="100306" description="Being referenced by supplier records (dept 12)" />
+    <Code id="100307" description="Department doesn't exist for dept 13" />
+    <Code id="100308" description="Being referenced by supplier records (dept 13)" />
+    <Code id="100309" description="Department doesn't exist for dept 14" />
+    <Code id="100310" description="Being referenced by supplier records (dept 14)" />
+    <Code id="100311" description="Department doesn't exist for dept 15" />
+    <Code id="100312" description="Being referenced by supplier records (dept 15)" />
+    <Code id="100313" description="Department doesn't exist for dept 16" />
+    <Code id="100314" description="Being referenced by supplier records (dept 16)" />
+    <Code id="100315" description="Department doesn't exist for dept 17" />
+    <Code id="100316" description="Being referenced by supplier records (dept 17)" />
+    <Code id="100317" description="Department doesn't exist for dept 18" />
+    <Code id="100318" description="Being referenced by supplier records (dept 18)" />
+    <Code id="100319" description="Department doesn't exist for dept 19" />
+    <Code id="100320" description="Being referenced by supplier records (dept 19)" />
+    <Code id="100321" description="Department doesn't exist for dept 20" />
+    <Code id="100322" description="Being referenced by supplier records (dept 20)" />
+    <Code id="100323" description="Discount item id doesn't exist" />
+    <Code id="100324" description="Being referenced by item records (discount item id)" />
+    <Code id="100325" description="Hostdata record doesn't exist" />
+    <Code id="100326" description="Being referenced by host predict record" />
+    <Code id="100327" description="Backroom area record doesn't exist" />
+    <Code id="100328" description="Being referenced by backroom location record" />
+    <Code id="100329" description="Backroom area record doesn't exist" />
+    <Code id="100330" description="Being referenced by backroom location record" />
+    <Code id="100331" description="Backroom location record doesn't exist" />
+    <Code id="100332" description="Being referenced by backroom location item record" />
+    <Code id="100333" description="Sku doesn't exist" />
+    <Code id="100334" description="Being referenced by interaction candidate records" />
+    <Code id="100335" description="User record doesn't exist" />
+    <Code id="100336" description="Being referenced by user records" />
+    <Code id="100337" description="Audit record doesn't exist" />
+    <Code id="100338" description="Being referenced by audit item location record" />
+  </ApplyError>
+</Configuration>
