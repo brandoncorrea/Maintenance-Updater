@@ -1,0 +1,2957 @@
+# VER02.40
+# NOTE: The first line of this file must be the version in VERmajor.minor
+# format. This is used to determine the ISP's current maintenance version for
+# comparison to the host maintenance received.
+#=============================================================================#
+# CT2020 HOSTDN.2.40.FMT
+#
+#
+# PURPOSE
+#   This file is used to define the format of any data to be loaded or updated
+# in the CT2020 Database using the ST iload or sod processes.
+#
+#
+# INVOCATION
+# This file is used by iload, and SOD.
+#
+# NOTES
+# - A Header Record must always be included as it is used to validate the
+# version.
+# - Record types are assigned to groups and must be added or updated in group
+# order.
+# - All fields within a record must be included, though placing tildes in a
+# field will leave it's value unchanged.
+#=============================================================================#
+# CHANGE LOG
+#
+# Date        	Pgmr  			Proj/Prob   Description of Change
+# ----------  	----  			---------   ------------------------------------------------
+# 10/04/2001  	PCAJ              			Initial CT2020 Version (VER2.0)
+# 10/26/2001  	PCAJ            	  		Changed name
+# 10/04/2001  	PCAJ             	 		Added room for Maint Type to HDR user field
+# 11/16/2001  	PCAJ              			Added SKU fields to PK, IL, SC, SP, CI, AL
+# 02/12/2002  	PAKW              			This has been modified to work with CT2020
+#                               			1.3.4 when CT2020 1.5 comes out this will need
+#                               			to be modified again.
+# 03/02/2002  	PCAJ              			Adjusted length of SKU.STATUS and ITEM.UM_CODE
+#                               			to solve justification problem.
+# 03/04/2002  	PCAJ              			Replaced some hosted fields with their "save
+#                               			host" counter-parts, in order to streamline
+#                            		   		some ISS ITEMRULE's. Added VER# to top.
+# 03/12/2002  	PCAJ              			Added SKU.USER_BIT_9 for Random Weight at the
+#                               			Item (SKU) level.
+# 03/13/2002  	PSLP              			Added ITEM.USER_BIT_15 for Retail Random
+#                               			Weight. Added SKU.USER_BIT_10 for Authorized
+#                               			for Ordering at the SKU level.
+#                               			Added SKU.USER_NUM4_8 for Order Group at the
+#                               			SKU level.
+# 03/14/2002  	PSLP              			Removed SKU.USER_BIT_10 because
+#                               			SKU.STORE_CAN_ORDER is the same thing.
+# 03/22/2002  	PCAJ              			Updated for CT2020v01.05.00
+# 03/26/2002  	PCAJ             			Adjusted POLL record to match old one.
+# 03/27/2002  	PCAJ              			Rearranged SKU, ID, TYPE, QTY, and SUPPLIER
+#                               			fields to common columns to facilitate sorting
+#                             		  		or maint and load files.
+# 06/06/2002  	PWCB           	  			Added detailed comments to every token
+#                              		 		reference and formatted for readability.
+# 06/14/2002  	PMAR1             			This has been modified to add
+#                               			auth.auth_complete_order
+# 07/19/2002  	PWCB              			Update allow comments only to reflect correct
+#                               			offsets.
+# 07/25/2002  	PAKW              			Identified which fields are required for
+#                               			SK,IT,IL,PK,SP records.
+# 08/07/2002  	PAKW              			Updated for CT2020v01.06.01
+# 08/26/2002  	PLMC              			Replaced package.height, width, depth, and
+#                               			weight with filler.
+# 12/19/2002  	PJLW  			010401      Changed version # to 2.02; added
+#                               			supplier.warehouse_flag.
+# 01/17/2002  	PJMC  			010401      Added composition maint (thought it was already
+#                               			there).
+# 01/24/2002  	PJMC  			010401      Updated auth permissions for all the new ones 
+#                               			added by SofTechnics.
+# 10/06/2003  	PJMC  			010401      Created version 2.16 (SIMR2 + SIMR3).
+# 12/03/2003  	PSLP  			020371      Created version 2.18 by merging 2.10 & 2.16.
+# 08/27/2004  	PJBP  			040290      Created version 2.20 adding Item Type, Core Item 
+#                               			Flag, and Replenishment Method to SKU record and 
+#                               			added Supplier Type to Supplier record.  
+# 10/15/2004  	PJLW  			040242      Added COOL record definitions: CClass, CText,
+#                               			CLiteral, Country, & CTextList.  Updated Item
+#                               			and ScalePlu for COOL.
+# 05/31/2005  	PJLW  			020372      Updated SKU, Case ID, and Category record
+#                               			definitions.
+# 07/20/2005  	PJMC  			050066      SKU record changes for activation.
+# 09/06/2005  	PMAR1 			020372      Added ADJUST_IMPORT_ONLY to reason section.
+# 11/20/2007  	PJMC	  		PR000829    Added ITEM.USER_BIT_19 & 21, ITEM.USER_NUM4_7,
+#                               			and updated ITEM.FILLER at end of item tokens.
+# 06/17/2009  	PTEP  			PR001718    Added SKU.USER_DATE_10 for SC order review date.
+# 03/17/2010  	PWCB  			PR002097    Provided descriptive updates to previously  
+#                               			unused format file segments that are now being
+#                               			used for Group Promotions.
+# 04/05/2010  	PJMC  			PR002097    Fixed order of ITEM.USER_PRICE_2 & 
+#                               			ITEM.USER_NUM4_3
+# 09/06/2013	Brian Otis		PR002856	Add "next day" and "alcohol" vendor attributes
+#											and send to ChainTrack as part of supplier Data Record.
+# 02/16/2016    TPMR      		PR004675    Repurposed SKU.USER_BIT_6 for Hazardous item
+#                                      		Repurposed SKU.USER_STRING30_1 for Battery type
+# 04/17/2017    Kevin Thomas	PR005668    Replace field / length SCALEPLU.COOL_TEXT_ID / 6 with 
+#											SCALEPLU.USER_NUM9_2 / 6.
+# 11/29/2017    Jason Cimini    PR005417    Updated reason maintenance. 
+# 02/08/2019	Andrew Hutcheson			Updated ITEM.USER_NUM4_2 (mix-match) to 3 digits
+# 08/13/2019    Tony Price                  Updated SKU.PARAM_GROUP_2 for DOT Hazardous use.
+#                                           Updated SCALEPLU. filler and added inverted print and 3 digit tare.
+#=============================================================================#
+RECORD_TERM_CRLF        2
+#
+#=============================================================================#
+# Header Record  110 char's                                           HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (HD)
+HDR.IDENTIFIER                          2
+#
+# Column  3             (1=Immediate, 2=Manual, 3=Automatic by Date/Time, 4,5=N/A)
+HDR.APPLY_TYPE                          1
+#
+# Column 4 - 5          (Result code)
+HDR.RESULT                              2
+#
+# Column 6 - 11         (Batch Number)
+HDR.BATCH                               6
+#
+# Column 12 - 61        (Description)
+HDR.DESCRIPTION                         50
+#
+# Column 62 - 81        (Ver(VER02.00);type(N=Norm,I=Immed,H=HComp,R=Recv,C=Conv,O=Ord Schd);future use)
+HDR.USER_STRING30_1                     20
+#
+# Column 82 - 89        (Create date - YYYYMMDD)
+HDR.CREATE_DATE                         8
+#
+# Column 90 - 95        (Create time - HHMMSS)
+HDR.CREATE_TIME                         6
+#
+# Column 96 - 103       (Apply date - YYYYMMDD)
+HDR.APPLY_DATE                          8
+#
+# Column 104 - 109      (Apply time - HHMMSS)
+HDR.APPLY_TIME                          6
+#
+# Column  110           (Need tags printed flag)
+HDR.NEEDS_TAGS_PRINTED                  1
+#
+#=============================================================================#
+#=====    GROUP I   ======#
+#=============================================================================#
+#=============================================================================#
+# Major Department Record  40  char's                                 HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (MD)
+MAJDEPT.IDENTIFIER                      2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+MAJDEPT.OPERATION                       1
+#
+# Column 4 - 5          (Result code)
+MAJDEPT.RESULT                          2
+#
+# Column 6 - 9          (Department number)
+MAJDEPT.MAJDEPT_NUMBER                  4
+#
+# Column 10 - 39        (Description)
+MAJDEPT.DESCRIPTION                     30
+#
+# Column  40            (Hold trailing spaces)
+MAJDEPT.FILLER                          1
+#
+#=============================================================================#
+# Family Group Record  42 char's (Sub(4)/Cat(2))                      HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (FA)
+FAMILY.IDENTIFIER                       2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+FAMILY.OPERATION                        1
+#
+# Column 4 - 5          (Result code)
+FAMILY.RESULT                           2
+#
+# Column 6 - 11         (Publix category code (Sub/Cat))
+FAMILY.FAMILY_GROUP                     6
+#
+# Column 12 - 41        (Publix category description)
+FAMILY.DESCRIPTION                      30
+#
+# Column  42            (Hold trailing spaces)
+FAMILY.FILLER                           1
+#
+#=============================================================================#
+# Like Code Record  39 char's                                       STATIC LOAD
+#=============================================================================#
+# Column 1 - 2          (LK)
+LIKE.IDENTIFIER                         2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+LIKE.OPERATION                          1
+#
+# Column 4 - 5          (Result code)
+LIKE.RESULT                             2
+#
+# Column 6 - 8          (Like code)
+LIKE.LIKE_CODE                          3
+#
+# Column 9 - 38         (Description)
+LIKE.DESCRIPTION                        30
+#
+# Column  39            (Hold trailing spaces)
+LIKE.FILLER                             1
+#
+#=============================================================================#
+# MixMatch Code Record  29 char's                                   STATIC LOAD
+#=============================================================================#
+# Column 1 - 2          (MM)
+MIXMATCH.IDENTIFIER                     2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+MIXMATCH.OPERATION                      1
+#
+# Column 4 - 5          (Result code)
+MIXMATCH.RESULT                         2
+#
+# Column 6 - 8          (Mixmatch number)
+MIXMATCH.MIX_MATCH_NUMBER               3
+#
+# Column 9 - 28         (Description)
+MIXMATCH.DESCRIPTION                    20
+#
+# Column  29            (Hold trailing spaces)
+MIXMATCH.FILLER                         1
+#
+#=============================================================================#
+# Promotion Record  28 char's                                         HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (PM)
+PROMO.IDENTIFIER                        2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+PROMO.OPERATION                         1
+#
+# Column 4 - 5          (Result code)
+PROMO.RESULT                            2
+#
+# Column 6 - 7          (Promotion type)
+PROMO.PROMO_TYPE                        2
+#
+# Column 8 - 27         (Description)
+PROMO.DESCRIPTION                       20
+#
+# Column  28            (Does promotion affect movement? flag)
+PROMO.AFFECTS_MOVEMENT                  1
+#
+#=============================================================================#
+# Reason Code Record  41 char's                                     STATIC LOAD
+#=============================================================================#
+# Column 1 - 2          (RS)
+REASON.IDENTIFIER                       2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+REASON.OPERATION                        1
+#
+# Column 4 - 5          (Result code)
+REASON.RESULT                           2
+#
+# Column 6 - 8          (Reason code)
+REASON.REASON                           3
+#
+# Column 9 - 28         (Description)
+REASON.DESCRIPTION                      20
+#
+# Column  29            (Should reason be used for price integrity? flag)
+REASON.PRICE_INTEGRITY                  1
+#
+# Column  30            (Should reason be used for misc. charges? flag)
+REASON.INV_MISC_CHARGE                  1
+#
+# Column  31            (Should reason be used for misc. allowances? flag)
+REASON.INV_MISC_ALLOW                   1
+#
+# Column  32            (Should reason be used for return invoices? flag)
+REASON.INV_RETURN                       1
+#
+# Column  33            (Should reason be used for totals only invoices? flag)
+REASON.INV_TOTALS_ONLY                  1
+#
+# Column  34            (Should reason be used for quantity discrepancy? flag)
+REASON.INV_QTY_DISCREP                  1
+#
+# Column  35            (Should reason be used for vendor violation? flag)
+REASON.VENDOR_VIOLATION                 1
+#
+# Column  36            (Should reason be used for manager alert? flag)
+REASON.MANAGER_ALERT                    1
+#
+# Column  37            (Should reason be used for adjustment increase? flag)
+REASON.ADJUST_INCREASE                  1
+#
+# Column  38            (Should reason be used for adjustment decrease? flag)
+REASON.ADJUST_DECREASE                  1
+#
+# Column  39            (Should reason be used for out of stock? flag)
+REASON.OUT_OF_STOCK                     1
+#
+# Column  40            (Should reason be used for transfers? flag)
+REASON.TRANSFER                         1
+#
+# Column  41            (Should import reasons be displayed? flag)
+REASON.ADJUST_IMPORT_ONLY               1
+#
+# Column 42
+REASON.DISCARD                          1
+#
+# Column 43
+REASON.SHRINK                           1
+#
+# Column 44
+REASON.MARKDOWN                         1
+#
+#=============================================================================#
+# Report Code Record  32 char's         FUTURE HOST
+#=============================================================================#
+# Column 1 - 2          (RP)
+REPORT.IDENTIFIER                       2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+REPORT.OPERATION                        1
+#
+# Column 4 - 5          (Result code)
+REPORT.RESULT                           2
+#
+# Column 6 - 11         (Report code)
+REPORT.REPORT_CODE                      6
+#
+# Column 12 - 31        (Description)
+REPORT.DESCRIPTION                      20
+#
+# Column  32            (Hold trailing spaces)
+REPORT.FILLER                           1
+#
+#=============================================================================#
+# ActCode Record  28 char's                                         STATIC LOAD
+#=============================================================================#
+# Column 1 - 2          (AC)
+ACTCODE.IDENTIFIER                      2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+ACTCODE.OPERATION                       1
+#
+# Column 4 - 5          (Result code)
+ACTCODE.RESULT                          2
+#
+# Column  6 - 7         (Action code)
+ACTCODE.ACTION_CODE                     2
+#
+# Column 8 - 27         (Description)
+ACTCODE.DESCRIPTION                     20
+#
+# Column  28            (Hold trailing spaces)
+ACTCODE.FILLER                          1
+#
+#=============================================================================#
+# Ingredient Record  2042 char's        SCALES MANAGEMENT             HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (IN)
+INGREDIENT.IDENTIFIER                   2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+INGREDIENT.OPERATION                    1
+#
+# Column 4 - 5          (Result code)
+INGREDIENT.RESULT                       2
+#
+# Column 6 - 11         (Ingredient number)
+INGREDIENT.INGREDIENT_NUMBER            6
+#
+# Column 12 - 41        (Description)
+INGREDIENT.DESCRIPTION                  30
+#
+# Column 42 - 2041      (Text)
+INGREDIENT.TEXT                         2000
+#
+# Column  2042          (Hold trailing spaces)
+INGREDIENT.FILLER                       1
+#
+#=============================================================================#
+# Nutrifact Record  312 char's          FUTURE SCALES MANAGEMENT
+#=============================================================================#
+# Column 1 - 2          (NU)
+NUTRIFACT.IDENTIFIER                    2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=N/A)
+NUTRIFACT.OPERATION                     1
+#
+# Column 4 - 5          (Result code)
+NUTRIFACT.RESULT                        2
+#
+# Column 6 - 11         (Nutrifact number)
+NUTRIFACT.NUTRIFACT_NUMBER              6
+#
+# Column 12 - 41        (Description)
+NUTRIFACT.DESCRIPTION                   30
+#
+# Column 42 - 47        (Template number)
+NUTRIFACT.TEMPLATE_NUMBER               6
+#
+# Column  48            (Label sequence)
+NUTRIFACT.LABEL_SEQUENCE                1
+#
+# Column  49            (Label orientation)
+NUTRIFACT.LABEL_ORIENTATION             1
+#
+# Column  50            (Simplified data)
+NUTRIFACT.SIMPLIFIED_DATA               1
+#
+# Column 51 - 85        (Serving size)
+NUTRIFACT.SERVING_SIZE                  35
+#
+# Column  86            (Serving size units)
+NUTRIFACT.SERVING_SIZE_UNITS            1
+#
+# Column 87 - 91        (Serving size value)
+NUTRIFACT.SERVING_SIZE_VALUE            5
+#
+# Column 92 - 96        (Serving size grams)
+NUTRIFACT.SERVING_SIZE_GR               5
+#
+# Column 97 - 106       (Servings per container)
+NUTRIFACT.SERVINGS_PER_CONT             10
+#
+# Column 107 - 109      (Servings)
+NUTRIFACT.SERVINGS                      3
+#
+# Column  110           (Compute servings? flag)
+NUTRIFACT.COMPUTE_SERVINGS              1
+#
+# Column 111 - 115      (Calories)
+NUTRIFACT.CALORIES                      5
+#
+# Column 116 - 120      (Calories from fat)
+NUTRIFACT.CALORIES_FROM_FAT             5
+#
+# Column 121 - 125      (Calories from saturated fat)
+NUTRIFACT.CAL_FROM_SAT_FAT              5
+#
+# Column 126 - 130      (Total fat grams)
+NUTRIFACT.TOTAL_FAT_GR                  5
+#
+# Column 131 - 134      (Total fat percentage of daily value per serving size)
+NUTRIFACT.TOTAL_FAT_PCT                 4
+#
+# Column 135 - 139      (Saturated fat grams)
+NUTRIFACT.SAT_FAT_GR                    5
+#
+# Column 140 - 143      (Saturated fat percentage of daily value per serving size)
+NUTRIFACT.SAT_FAT_PCT                   4
+#
+# Column 144 - 148      (Polyunsaturated fat grams)
+NUTRIFACT.POLYUNSAT_FAT_GR              5
+#
+# Column 149 - 153      (Monounsaturated fat grams)
+NUTRIFACT.MONOUNSAT_FAT_GR              5
+#
+# Column 154 - 158      (Cholesterol milligrams)
+NUTRIFACT.CHOLESTEROL_MG                5
+#
+# Column 159 - 162      (Cholesterol percentage of daily value per serving size)
+NUTRIFACT.CHOLESTEROL_PCT               4
+#
+# Column 163 - 167      (Sodium milligrams)
+NUTRIFACT.SODIUM_MG                     5
+#
+# Column 168 - 171      (Sodium percentage of daily value per serving size)
+NUTRIFACT.SODIUM_PCT                    4
+#
+# Column 172 - 176      (Potassium milligrams)
+NUTRIFACT.POTASSIUM_MG                  5
+#
+# Column 177 - 180      (Potassium percentage of daily value per serving size)
+NUTRIFACT.POTASSIUM_PCT                 4
+#
+# Column 181 - 185      (Total carbohydrates grams)
+NUTRIFACT.TOTAL_CARB_GR                 5
+#
+# Column 186 - 189      (Total carbohydrates percentage of daily value per serving size)
+NUTRIFACT.TOTAL_CARB_PCT                4
+#
+# Column 190 - 194      (Dietary fiber grams)
+NUTRIFACT.DIETARY_FIBER_GR              5
+#
+# Column 195 - 198      (Dietary fiber percentage of daily value per serving size)
+NUTRIFACT.DIETARY_FIBER_PCT             4
+#
+# Column 199 - 203      (Soluble fiber grams)
+NUTRIFACT.SOLUBLE_FIBER_GR              5
+#
+# Column 204 - 208      (Insoluble fiber grams)
+NUTRIFACT.INSOLUBLE_FIBER_GR            5
+#
+# Column 209 - 213      (Sugars grams)
+NUTRIFACT.SUGARS_GR                     5
+#
+# Column 214 - 218      (Sugar alcohol grams)
+NUTRIFACT.SUGAR_ALCOHOL_GR              5
+#
+# Column 219 - 223      (Other carbohydrates grams)
+NUTRIFACT.OTHER_CARB_GR                 5
+#
+# Column 224 - 228      (Protein grams)
+NUTRIFACT.PROTEIN_GR                    5
+#
+# Column 229 - 232      (Protein percentage of daily value per serving size)
+NUTRIFACT.PROTEIN_PCT                   4
+#
+# Column 233 - 236      (Vitamin A percentage of daily value per serving size)
+NUTRIFACT.VITAMIN_A_PCT                 4
+#
+# Column 237 - 240      (Beta carotene percentage of daily value per serving size)
+NUTRIFACT.BETA_CAROTENE_PCT             4
+#
+# Column 241 - 244      (Vitamin C percentage of daily value per serving size)
+NUTRIFACT.VITAMIN_C_PCT                 4
+#
+# Column 245 - 248      (Calcium percentage of daily value per serving size)
+NUTRIFACT.CALCIUM_PCT                   4
+#
+# Column 249 - 252      (Iron percentage of daily value per serving size)
+NUTRIFACT.IRON_PCT                      4
+#
+# Column 253 - 256      (Vitamin D percentage of daily value per serving size)
+NUTRIFACT.VITAMIN_D_PCT                 4
+#
+# Column 257 - 260      (Vitamin E percentage of daily value per serving size)
+NUTRIFACT.VITAMIN_E_PCT                 4
+#
+# Column 261 - 264      (Thiamin percentage of daily value per serving size)
+NUTRIFACT.THIAMIN_PCT                   4
+#
+# Column 265 - 268      (Riboflavin percentage of daily value per serving size)
+NUTRIFACT.RIBOFLAVIN_PCT                4
+#
+# Column 269 - 272      (Niacin percentage of daily value per serving size)
+NUTRIFACT.NIACIN_PCT                    4
+#
+# Column 273 - 276      (Vitamin B6 percentage of daily value per serving size)
+NUTRIFACT.VITAMIN_B6_PCT                4
+#
+# Column 277 - 280      (Folate percentage of daily value per serving size)
+NUTRIFACT.FOLATE_PCT                    4
+#
+# Column 281 - 284      (Vitamin B12 percentage of daily value per serving size)
+NUTRIFACT.VITAMIN_B12_PCT               4
+#
+# Column 285 - 288      (Biotin percentage of daily value per serving size)
+NUTRIFACT.BIOTIN_PCT                    4
+#
+# Column 289 - 292      (Pantothenic percentage of daily value per serving size)
+NUTRIFACT.PANTOTHENIC_PCT               4
+#
+# Column 293 - 296      (Phosphorus percentage of daily value per serving size)
+NUTRIFACT.PHOSPHORUS_PCT                4
+#
+# Column 297 - 300      (Iodine percentage of daily value per serving size)
+NUTRIFACT.IODINE_PCT                    4
+#
+# Column 301 - 304      (Magnesium percentage of daily value per serving size)
+NUTRIFACT.MAGNESIUM_PCT                 4
+#
+# Column 305 - 308      (Zinc percentage of daily value per serving size)
+NUTRIFACT.ZINC_PCT                      4
+#
+# Column 309 - 312      (Copper percentage of daily value per serving size)
+NUTRIFACT.COPPER_PCT                    4
+#
+#=============================================================================#
+# Graphic Record  111 char's            FUTURE SCALES MANAGEMENT
+#=============================================================================#
+# Column 1 - 2          (GR)
+GRAPHIC.IDENTIFIER                      2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+GRAPHIC.OPERATION                       1
+#
+# Column 4 - 5          (Result code)
+GRAPHIC.RESULT                          2
+#
+# Column 6 - 11         (Graphic number)
+GRAPHIC.GRAPHIC_NUMBER                  6
+#
+# Column 12 - 41        (Description)
+GRAPHIC.DESCRIPTION                     30
+#
+# Column 42 - 105       (File name)
+GRAPHIC.FILE_NAME                       64
+#
+# Column 106 - 108      (Width of graphic in pixels)
+GRAPHIC.WIDTH                           3
+#
+# Column 109 - 111      (Height of graphic in pixels)
+GRAPHIC.HEIGHT                          3
+#
+#=============================================================================#
+# Scale Location Record  38 char's      SCALES MANAGEMENT             HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (SL)
+SCALELOC.IDENTIFIER                     2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+SCALELOC.OPERATION                      1
+#
+# Column 4 - 5          (Result code)
+SCALELOC.RESULT                         2
+#
+# Column 6 - 7          (Location number)
+SCALELOC.LOCATION_NUMBER                2
+#
+# Column 8 - 37         (Description)
+SCALELOC.DESCRIPTION                    30
+#
+# Column  38            (Hold trailing spaces)
+SCALELOC.FILLER                         1
+#
+#=============================================================================#
+# Authorization Record  186 char's                                  STATIC LOAD
+#=============================================================================#
+# Column 1 - 2          (AU)
+AUTH.IDENTIFIER                         2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+AUTH.OPERATION                          1
+#
+# Column 4 - 5          (Result code)
+AUTH.RESULT                             2
+#
+# Column 6 - 13         (Model name)
+AUTH.MODEL_NAME                         8
+#
+# Column 14 - 43        (Description)
+AUTH.DESCRIPTION                        30
+#
+# Column  44            (Default printer)
+AUTH.PRINTER                            1
+#
+# Column 45 - 58        (Screen directory)
+AUTH.SCREEN_DIR                         14
+#
+# Column  59            (Change password? flag)
+AUTH.AUTH_CHANGE_PASSWORD               1
+#
+# Column  60            (Vendor violation? flag)
+AUTH.AUTH_VNDR_VIOLATION                1
+#
+# Column  61            (Manager alert? flag)
+AUTH.AUTH_MANAGER_ALERT                 1
+#
+# Column  62            (Invoice maintenance? flag)
+AUTH.AUTH_INV_MAINT                     1
+#
+# Column  63            (screen separator 1-2)
+AUTH.FILLER                             1
+#
+# Column  64            (Order? flag)
+AUTH.AUTH_ORDERING                      1
+#
+# Column  65            (Unscheduled order? flag)
+AUTH.AUTH_UNSCHED_ORD                   1
+#
+# Column  66            (Clear backroom? flag)
+AUTH.AUTH_ORDER_CLEARING                1
+#
+# Column  67            (Complete order)
+AUTH.AUTH_COMPLETE_ORDER                1
+#
+# Column  68            (Review action records? flag)
+AUTH.AUTH_IV_REV_ACT                    1
+#
+# Column  69            (Edit response files? flag)
+AUTH.AUTH_IV_ED_RESP                    1
+#
+# Column  70            (Edit action codes? flag)
+AUTH.AUTH_IV_ED_ACT                     1
+#
+# Column  71            (Print shelf labels for tagged items? flag)
+AUTH.AUTH_ACT_LBL                       1
+#
+# Column  72            (Print shelf labels? flag)
+AUTH.AUTH_SHELF_LABELS                  1
+#
+# Column  73            (Acces charity maintenance? flag)
+AUTH.AUTH_CHARITY_MAINT                 1
+#
+# Column  74            (Acces donations ? flag)
+AUTH.AUTH_DONATIONS                     1
+#
+# Column  75            (Access transfers? flag)
+AUTH.AUTH_TRANSFERS                     1
+#
+# Column  76            (Change cost on unauth items in detail transfer? flag)
+AUTH.AUTH_TRANSFER_CHANGE_COST          1
+#
+# Column  77            (screen separator 2-3)
+AUTH.FILLER                             1
+#
+# Column  78            (View report menu? flag)
+AUTH.AUTH_RPRT_MENU                     1
+#
+# Column  79            (Maintain print jobs? flag)
+AUTH.AUTH_PR_LOOK                       1
+#
+# Column  80            (Print group 0 reports? flag)
+AUTH.AUTH_PR_GROUP0                     1
+#
+# Column  81            (Print group 1 reports? flag)
+AUTH.AUTH_PR_GROUP1                     1
+#
+# Column  82            (Print group 2 reports? flag)
+AUTH.AUTH_PR_GROUP2                     1
+#
+# Column  83            (Print group 3 reports? flag)
+AUTH.AUTH_PR_GROUP3                     1
+#
+# Column  84            (Print group 4 reports? flag)
+AUTH.AUTH_PR_GROUP4                     1
+#
+# Column  85            (Print group 5 reports? flag)
+AUTH.AUTH_PR_GROUP5                     1
+#
+# Column  86            (Print group 6 reports? flag)
+AUTH.AUTH_PR_GROUP6                     1
+#
+# Column  87            (Print group 7 reports? flag)
+AUTH.AUTH_PR_GROUP7                     1
+#
+# Column  88            (Print group 8 reports? flag)
+AUTH.AUTH_PR_GROUP8                     1
+#
+# Column  89            (Print group 9 reports? flag)
+AUTH.AUTH_PR_GROUP9                     1
+#
+# Column  90            (screen separator 3-4)
+AUTH.FILLER                             1
+#
+# Column  91            (SKU maintenance? flag)
+AUTH.AUTH_SKU_MAINT                     1
+#
+# Column  92           (Item maintenance? flag)
+AUTH.AUTH_ITEM_MAINT                    1
+#
+# Column  93            (Group allowance maintenance? flag)
+AUTH.AUTH_GRPALLOW_MAINT                1
+#
+# Column  94            (Case ID maintenance? flag)
+AUTH.AUTH_CASEID_MAINT                  1
+#
+# Column  95            (Link maintenance? flag)
+AUTH.AUTH_LINK_MAINT                    1
+#
+# Column  96            (Supplier maintenance? flag)
+AUTH.AUTH_SUPPLIER_MAINT                1
+#
+# Column  97            (Department maintenance? flag)
+AUTH.AUTH_DEPT_MAINT                    1
+#
+# Column  98            (Mixmatch maintenance? flag)
+AUTH.AUTH_MIXMATCH_MAINT                1
+#
+# Column  99            (Category maintenance? flag)
+AUTH.AUTH_CATEGORY_MAINT                1
+#
+# Column  100           (Like maintenance? flag)
+AUTH.AUTH_LIKE_MAINT                    1
+#
+# Column  101           (Report maintenance? flag)
+AUTH.AUTH_REPORT_MAINT                  1
+#
+# Column  102           (Reason maintenance? flag)
+AUTH.AUTH_REASON_MAINT                  1
+#
+# Column  103           (Order group maintenance? flag)
+AUTH.AUTH_ORD_GRP_MAINT                 1
+#
+# Column  104           (Family maintenance? flag)
+AUTH.AUTH_FAMILY_MAINT                  1
+#
+# Column  105           (Major department maintenance? flag)
+AUTH.AUTH_MAJDEPT_MAINT                 1
+#
+# Column  106           (screen separator 4-5)
+AUTH.FILLER                             1
+#
+# Column  107           (Cycle maintenance? flag)
+AUTH.AUTH_CYCLE_MAINT                   1
+#
+# Column  108           (Promotion maintenance? flag)
+AUTH.AUTH_PROMO_MAINT                   1
+#
+# Column  109           (Mass maintenance? flag)
+AUTH.AUTH_MASS_MAINT                    1
+#
+# Column  110           (Batch maintenance? flag)
+AUTH.AUTH_CRTAPPLY                      1
+#
+# Column  111           (Delete batch? flag)
+AUTH.AUTH_DELETE_BATCH                  1
+#
+# Column  112           (View audit? flag)
+AUTH.AUTH_VIEW_AUDIT                    1
+#
+# Column  113           (Coupon maintenance? flag)
+AUTH.AUTH_COUPON_MAINT                  1
+#
+# Column  114           (Item location maintenance? flag)
+AUTH.AUTH_ITEMLOC_MAINT                 1
+#
+# Column  115           (Scale PLU maintenance? flag)
+AUTH.AUTH_SCL_PLU_MAINT                 1
+#
+# Column  116           (Ingredient maintenance? flag)
+AUTH.AUTH_SCL_INGR_MAINT                1
+#
+# Column  117           (Nutrifact maintenance? flag)
+AUTH.AUTH_SCL_NUTRFCT_MAINT             1
+#
+# Column  118           (Label message maintenance? flag)
+AUTH.AUTH_SCL_LBLMESG_MAINT             1
+#
+# Column  119           (Recipe maintenance? flag)
+AUTH.AUTH_SCL_RECIPE_MAINT              1
+#
+# Column  120           (Special offer maintenance? flag)
+AUTH.AUTH_SCL_OFFER_MAINT               1
+#
+# Column  121           (Grade maintenance? flag)
+AUTH.AUTH_SCL_GRADE_MAINT               1
+#
+# Column  122           (screen separator 5-6)
+AUTH.FILLER                             1
+#
+# Column  123           (Graphic maintenance? flag)
+AUTH.AUTH_SCL_GRAPHIC_MAINT             1
+#
+# Column  124           (Scale Ad Message Maintenance? flag)
+AUTH.AUTH_SCL_AD_MAINT                  1
+#
+# Column  125           (Cutting Test Maintenance? flag)
+AUTH.AUTH_CUTTING_TEST_MAINT            1
+#
+# Column  126           (Perform Cutting Test? flag)
+AUTH.AUTH_CUTTING_TEST                  1
+#
+# Column  127           (Start of day? flag)
+AUTH.AUTH_SOD                           1
+#
+# Column  128           (End of day? flag)
+AUTH.AUTH_EOD                           1
+#
+# Column  129           (Database backup? flag)
+AUTH.AUTH_BACKUP                        1
+#
+# Column  130           (Background process? flag)
+AUTH.AUTH_PROCESS_MAINT                 1
+#
+# Column  131           (Form maintenance? flag)
+AUTH.AUTH_FORM_MAINT                    1
+#
+# Column  132           (Stock maintenance? flag)
+AUTH.AUTH_STOCK_MAINT                   1
+#
+# Column  133           (Package maintenance? flag)
+AUTH.AUTH_PACKAGE_MAINT                 1
+#
+# Column  134           (Supplier package maintenance? flag)
+AUTH.AUTH_SUPPACK_MAINT                 1
+#
+# Column  135           (Carrier maintenance? flag)
+AUTH.AUTH_CARRIER_MAINT                 1
+#
+# Column  136           (Composition maintenance? flag)
+AUTH.AUTH_COMPOSITION_MAINT             1
+#
+# Column  137           (Order determination? flag)
+AUTH.AUTH_ORDDET                        1
+#
+# Column  138           (screen separator 6-7)
+AUTH.FILLER                             1
+#
+# Column  139           (Store maintenance? flag)
+AUTH.AUTH_STORE_MAINT                   1
+#
+# Column  140           (Hours maintenance? flag)
+AUTH.AUTH_HOURS_MAINT                   1
+#
+# Column  141           (Calendar event maintenance? flag)
+AUTH.AUTH_CALEVENT_MAINT                1
+#
+# Column  142           (Calendar period maintenance? flag)
+AUTH.AUTH_CALPERIOD_MAINT               1
+#
+# Column  143           (User maintenance? flag)
+AUTH.AUTH_USER_ID_MAINT                 1
+#
+# Column  144           (Polling schedule maintenance? flag)
+AUTH.AUTH_POLL_MAINT                    1
+#
+# Column  145           (Authorization model maintenance? flag)
+AUTH.AUTH_AUTH_MAINT                    1
+#
+# Column  146           (Scale location maintenance? flag)
+AUTH.AUTH_SCL_LOC_MAINT                 1
+#
+# Column  147           (Period maintenance? flag)
+AUTH.AUTH_PERIOD_MAINT                  1
+#
+# Column  148           (screen separator 7-8)
+AUTH.FILLER                             1
+#
+# Column  149           (Review held from handheld? flag)
+AUTH.AUTH_FM_REVIEW_HELD                1
+#
+# Column  150           (Receiver scan from handheld? flag)
+AUTH.AUTH_FM_NON_DEX                    1
+#
+# Column  151           (Print reports from handheld? flag)
+AUTH.AUTH_FM_REPORTS                    1
+#
+# Column  152           (FM batch mode item verification? flag)
+AUTH.AUTH_FM_IV_BATCH                   1
+#
+# Column  153           (FM direct mode item verification? flag)
+AUTH.AUTH_FM_IV_DIRECT                  1
+#
+# Column  154           (FM batch mode add items? flag)
+AUTH.AUTH_FM_ADD_BATCH                  1
+#
+# Column  155           (FM direct mode add items? flag)
+AUTH.AUTH_FM_ADD_DIRECT                 1
+#
+# Column  156           (Void items from handheld? flag)
+AUTH.AUTH_FM_VOID_INV                   1
+#
+# Column  157           (End of day from handheld? flag)
+AUTH.AUTH_FM_EOD                        1
+#
+# Column  158           (Add unauth items? flag)
+AUTH.AUTH_INV_UNAUTH                    1
+#
+# Column  159           (Apply pre-applied HOST maint after placing shelf tag? flag)
+AUTH.AUTH_FM_SHELF_TAGS                 1
+#
+# Column  160           (Manager stop audits? flag)
+AUTH.AUTH_FM_DSD_AUDIT                  1
+#
+# Column  161           (Access out of stock data? flag)
+AUTH.AUTH_OUT_OF_STOCK                  1
+#
+# Column  162           (screen separator 8-9)
+AUTH.FILLER                             1
+#
+# Column  163           (Perform physical inventory? flag)
+AUTH.AUTH_CNT                           1
+#
+# Column  164           (Count batch selection criteria? flag)
+AUTH.AUTH_CNT_SELECTION                 1
+#
+# Column  165           (Store generated count batch? flag)
+AUTH.AUTH_CNT_STORE_MAINT               1
+#
+# Column  166           (HOST generated count batch? flag)
+AUTH.AUTH_CNT_HOST_MAINT                1
+#
+# Column  167           (Order determination generated count batch? flag)
+AUTH.AUTH_CNT_ORDDET_MAINT              1
+#
+# Column  168           (Random count batch? flag)
+AUTH.AUTH_CNT_RANDOM                    1
+#
+# Column  169           (Count batch? flag)
+AUTH.AUTH_CNT_COUNT                     1
+#
+# Column  170           (Recount batch? flag)
+AUTH.AUTH_CNT_RECOUNT                   1
+#
+# Column  171           (Finalize count batch/ inventory adjustment? flag)
+AUTH.AUTH_CNT_FINAL                     1
+#
+# Column  172           (Delete store generated batch? flag)
+AUTH.AUTH_CNT_DEL_STORE                 1
+#
+# Column  173           (Delete host generated batch? flag)
+AUTH.AUTH_CNT_DEL_HOST                  1   
+#
+# Column  174           (View PI during recount? flag)
+AUTH.AUTH_CNT_VIEW_QTY                  1
+#
+# Column  175           (Add line items to a store batch? flag)
+AUTH.AUTH_CNTLINE_ADD_STORE             1
+#
+# Column  176           (Delete line items to a store batch? flag)
+AUTH.AUTH_CNTLINE_DEL_STORE             1
+#
+# Column  177           (Add line items to a host batch? flag)
+AUTH.AUTH_CNTLINE_ADD_HOST              1
+#
+# Column  178           (screen separator 9-10)
+AUTH.FILLER                             1
+#
+# Column  179           (Delete line items to a host batch? flag)
+AUTH.AUTH_CNTLINE_DEL_HOST              1
+#
+# Column  180           (Adjustments? flag)
+AUTH.AUTH_ADJ                           1
+#
+# Column  181           (Void adjustments? flag)
+AUTH.AUTH_ADJ_VOID                      1
+#
+# Column  182           (Allow review Whse invoice? flag)
+AUTH.AUTH_REVIEW_WAREHOUSE              1
+#
+# Column  183           (Void Whse invoice? flag)
+AUTH.AUTH_VOID_WAREHOUSE                1
+#
+# Column  184           (Force close Whse invoice? flag)
+AUTH.AUTH_FORCE_CLOSE_WAREHOUSE         1
+#
+# Column  185           (Allow review DSD invoice? flag)
+AUTH.AUTH_REVIEW_DSD                    1
+#
+# Column  186           (Void DSD invoice? flag)
+AUTH.AUTH_VOID_DSD                      1
+#
+#=============================================================================#
+# Store Hours Record  97 char's                                     STATIC LOAD
+#=============================================================================#
+# Column 1 - 2          (HR)
+HOURS.IDENTIFIER                        2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+HOURS.OPERATION                         1
+#
+# Column 4 - 5          (Result code)
+HOURS.RESULT                            2
+#
+# Column 6 - 13         (Effective date - YYYYMMDD)
+HOURS.EFFECTIVE_DATE                    8
+#
+# Column 14 - 19        (Sunday open time - HHMMSS)
+HOURS.SUN_OPEN_TIME                     6
+#
+# Column 20 - 25        (Sunday close time - HHMMSS)
+HOURS.SUN_CLOSE_TIME                    6
+#
+# Column 26 - 31        (Monday open time - HHMMSS)
+HOURS.MON_OPEN_TIME                     6
+#
+# Column 32 - 37        (Monday close time - HHMMSS)
+HOURS.MON_CLOSE_TIME                    6
+#
+# Column 38 - 43        (Tuesday open time - HHMMSS)
+HOURS.TUE_OPEN_TIME                     6
+#
+# Column 44 - 49        (Tuesday close time - HHMMSS)
+HOURS.TUE_CLOSE_TIME                    6
+#
+# Column 50 - 55        (Wednesday open time - HHMMSS)
+HOURS.WED_OPEN_TIME                     6
+#
+# Column 56 - 61        (Wednesday close time - HHMMSS)
+HOURS.WED_CLOSE_TIME                    6
+#
+# Column 62 - 67        (Thursday open time - HHMMSS)
+HOURS.THU_OPEN_TIME                     6
+#
+# Column 68 - 73        (Thursday close time - HHMMSS)
+HOURS.THU_CLOSE_TIME                    6
+#
+# Column 74 - 79        (Friday open time - HHMMSS)
+HOURS.FRI_OPEN_TIME                     6
+#
+# Column 80 - 85        (Friday close time - HHMMSS)
+HOURS.FRI_CLOSE_TIME                    6
+#
+# Column 86 - 91        (Saturday open time - HHMMSS)
+HOURS.SAT_OPEN_TIME                     6
+#
+# Column 92 - 97        (Saturday close time - HHMMSS)
+HOURS.SAT_CLOSE_TIME                    6
+#
+#=============================================================================#
+# Stores Record  190 char's                                         STATIC LOAD
+#=============================================================================#
+# Column 1 - 2          (ST)
+STORE.IDENTIFIER                        2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+STORE.OPERATION                         1
+#
+# Column 4 - 5          (Result code)
+STORE.RESULT                            2
+#
+# Column 6 - 11         (Store number)
+STORE.STORE_NUMBER                      6
+#
+# Column  12            (Is this record for this store? flag)
+STORE.THIS_STORE                        1
+#
+# Column 13 - 21        (Dun & Bradstreet number)
+STORE.DUNS_NUMBER                       9
+#
+# Column 22 - 31        (Communication ID)
+STORE.COMM_ID                           10
+#
+# Column 32 - 40        (Secret code; encrypted signature)
+STORE.SECRET_CODE                       9
+#
+# Column 41 - 75        (Store name)
+STORE.NAME                              35
+#
+# Column 76 - 110       (Street address line 1)
+STORE.STREET_1                          35
+#
+# Column 111 - 145      (Street address line 2)
+STORE.STREET_2                          35
+#
+# Column 146 - 175      (City)
+STORE.CITY                              30
+#
+# Column 176 - 177      (State)
+STORE.STATE                             2
+#
+# Column 178 - 187      (ZIP code)
+STORE.ZIP_CODE                          10
+#
+# Column 188 - 190      (Division number)
+STORE.DIVISION_NUMBER                   3
+#
+#=============================================================================#
+# Cycle Record  45 char's               STORE INVENTORY MGMT
+#=============================================================================#
+# Column 1 - 2          (CY)
+CYCLE.IDENTIFIER                        2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+CYCLE.OPERATION                         1
+#
+# Column 4 - 5          (Result code)
+CYCLE.RESULT                            2
+#
+# Column 6 - 14         (Cycle group number)
+CYCLE.CYCLE_GROUP                       9
+#
+# Column 15 - 44        (Description)
+CYCLE.DESCRIPTION                       30
+#
+# Column  45            (Hold trailing spaces)
+CYCLE.FILLER                            1
+#
+#=============================================================================#
+# Period Record  53 char's              STORE INVENTORY MGMT
+#=============================================================================#
+# Column 1 - 2          (PE)
+PERIOD.IDENTIFIER                       2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+PERIOD.OPERATION                        1
+#
+# Column 4 - 5          (Result code)
+PERIOD.RESULT                           2
+#
+# Column  6             (Period type)
+PERIOD.PERIOD_TYPE                      1
+#
+# Column 7 - 14         (Inventory period end date - YYYYMMDD)
+PERIOD.END_DATE                         8
+#
+# Column 15 - 22        (Inventory period begin date - YYYYMMDD)
+PERIOD.BEGIN_DATE                       8
+#
+# Column 23 - 52        (Description)
+PERIOD.DESCRIPTION                      30
+#
+# Column  53            (Hold trailing spaces)
+PERIOD.FILLER                           1
+#
+#=============================================================================#
+# Count Record  458 char's              STORE INVENTORY MGMT
+#=============================================================================#
+# Column 1 - 2          (CT)
+COUNT.IDENTIFIER                        2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=N/A)
+COUNT.OPERATION                         1
+#
+# Column 4 - 5          (Result code)
+COUNT.RESULT                            2
+#
+# Column 6 - 11         (Count batch ID)
+COUNT.COUNT_ID                          6
+#
+# Column 12 - 31        (Description)
+COUNT.DESCRIPTION                       20
+#
+# Column  32            (Boolean AND/OR flag; SKU passes all criteria? (AND), any criteria? (OR))
+COUNT.AND_FLAG                          1
+#
+# Column 33 - 45        (Beginning SKU)
+COUNT.BEG_SKU                           13
+#
+# Column 46 - 58        (Ending SKU)
+COUNT.END_SKU                           13
+#
+# Column 59 - 71        (Beginning item ID)
+COUNT.BEG_ITEM_ID                       13
+#
+# Column 72 - 84        (Ending item ID)
+COUNT.END_ITEM_ID                       13
+#
+# Column 85 - 97        (Beginning order code)
+COUNT.BEG_ORDER_CODE                    13
+#
+# Column 98 - 110       (Ending order code)
+COUNT.END_ORDER_CODE                    13
+#
+# Column 111 - 119      (Supplier number 1)
+COUNT.SUPPLIER_NUMBER_1                 9
+#
+# Column 120 - 128      (Supplier number 2)
+COUNT.SUPPLIER_NUMBER_2                 9
+#
+# Column 129 - 137      (Supplier number 3)
+COUNT.SUPPLIER_NUMBER_3                 9
+#
+# Column 138 - 146      (Supplier number 4)
+COUNT.SUPPLIER_NUMBER_4                 9
+#
+# Column 147 - 155      (Supplier number 5)
+COUNT.SUPPLIER_NUMBER_5                 9
+#
+# Column 156 - 164      (Supplier number 6)
+COUNT.SUPPLIER_NUMBER_6                 9
+#
+# Column 165 - 173      (Supplier number 7)
+COUNT.SUPPLIER_NUMBER_7                 9
+#
+# Column 174 - 182      (Supplier number 8)
+COUNT.SUPPLIER_NUMBER_8                 9
+#
+# Column 183 - 191      (Supplier number 9)
+COUNT.SUPPLIER_NUMBER_9                 9
+#
+# Column 192 - 200      (Supplier number 10)
+COUNT.SUPPLIER_NUMBER_10                9
+#
+# Column 201 - 204      (Department number 1)
+COUNT.DEPT_NUMBER_1                     4
+#
+# Column 205 - 208      (Department number 2)
+COUNT.DEPT_NUMBER_2                     4
+#
+# Column 209 - 212      (Department number 3)
+COUNT.DEPT_NUMBER_3                     4
+#
+# Column 213 - 216      (Department number 4)
+COUNT.DEPT_NUMBER_4                     4
+#
+# Column 217 - 220      (Major department number 1)
+COUNT.MAJDEPT_NUMBER_1                  4
+#
+# Column 221 - 224      (Major department number 2)
+COUNT.MAJDEPT_NUMBER_2                  4
+#
+# Column 225 - 228      (Major department number 3)
+COUNT.MAJDEPT_NUMBER_3                  4
+#
+# Column 229 - 232      (Major department number 4)
+COUNT.MAJDEPT_NUMBER_4                  4
+#
+# Column 233 - 240      (Beginning category code)
+COUNT.BEG_CATEGORY_CODE                 8
+#
+# Column 241 - 248      (Ending category code)
+COUNT.END_CATEGORY_CODE                 8
+#
+# Column 249 - 254      (Beginning report code)
+COUNT.BEG_REPORT_CODE                   6
+#
+# Column 255 - 260      (Ending report code)
+COUNT.END_REPORT_CODE                   6
+#
+# Column 261 - 266      (Beginning family group)
+COUNT.BEG_FAMILY_GROUP                  6
+#
+# Column 267 - 272      (Ending family group)
+COUNT.END_FAMILY_GROUP                  6
+#
+# Column 273 - 280      (Beginning create date - YYYYMMDD)
+COUNT.BEG_CREATE_DATE                   8
+#
+# Column 281 - 288      (Ending create date - YYYYMMDD)
+COUNT.END_CREATE_DATE                   8
+#
+# Column 289 - 296      (Beginning promotion date - YYYYMMDD)
+COUNT.BEG_PROMO_DATE                    8
+#
+# Column 297 - 304      (Ending promotion date - YYYYMMDD)
+COUNT.END_PROMO_DATE                    8
+#
+# Column 305 - 307      (Aisle)
+COUNT.AISLE                             3
+#
+# Column 308 - 310      (Side)
+COUNT.SIDE                              3
+#
+# Column 311 - 313      (Section)
+COUNT.SECT                              3
+#
+# Column 314 - 316      (Shelf)
+COUNT.SHELF                             3
+#
+# Column  317           (Perpetual? flag)
+COUNT.PERPETUAL_FLAG                    1
+#
+# Column 318 - 325      (Beginning allowance date - YYYYMMDD)
+COUNT.BEG_ALLOWANCE_DATE                8
+#
+# Column 326 - 333      (Ending allowance date - YYYYMMDD)
+COUNT.END_ALLOWANCE_DATE                8
+#
+# Column 334 - 341      (Beginning lastcount date - YYYYMMDD)
+COUNT.BEG_LASTCOUNT_DATE                8
+#
+# Column 342 - 349      (Beginning lastcount date - YYYYMMDD)
+COUNT.END_LASTCOUNT_DATE                8
+#
+# Column 350 - 358      (Cycle group)
+COUNT.CYCLE_GROUP                       9
+#
+# Column 359 - 366      (Beginning ID change - YYYYMMDD)
+COUNT.BEG_ID_CHANGE_DATE                8
+#
+# Column 367 - 374      (Ending ID change date - YYYYMMDD)
+COUNT.END_ID_CHANGE_DATE                8
+#
+# Column  375           (Active? flag)
+COUNT.ACTIVE                            1
+#
+# Column 376 - 383      (Beginning active date - YYYYMMDD)
+COUNT.BEG_ACTIVE_DATE                   8
+#
+# Column 384 - 391      (Ending active date - YYYYMMDD)
+COUNT.END_ACTIVE_DATE                   8
+#
+# Column  392           (Enable maximum quantity? flag)
+COUNT.ENABLE_MAX_QTY                    1
+#
+# Column 393 - 401      (Maximum quantity available)
+COUNT.MAX_QTY_AVAILABLE                 9
+#
+# Column  402           (Out of stock? flag)
+COUNT.OOS_FLAG                          1
+#
+# Column 403 - 411      (Random quantity)
+COUNT.RANDOM_QTY                        9
+#
+# Column 412 - 414      (Random percent)
+COUNT.RANDOM_PERCENT                    3
+#
+# Column 415 - 416      (Minimum days on hand)
+COUNT.MIN_DAYS_ON_HAND                  2
+#
+# Column 417 - 418      (Maximum days on hand)
+COUNT.MAX_DAYS_ON_HAND                  2
+#
+# Column 419 - 420      (Minimum adjust quantity)
+COUNT.MIN_ADJ_QTY                       2
+#
+# Column 421 - 423      (Maximum adjust percent)
+COUNT.MIN_ADJ_PERCENT                   3
+#
+# Column 424 - 427      (Minimum movement quantity)
+COUNT.MIN_MOVE_QTY                      4
+#
+# Column 428 - 430      (Highest movement selection)
+COUNT.HIGH_MOVE_SEL_QTY                 3
+#
+# Column 431 - 438      (Make date - YYYYMMDD)
+COUNT.MAKE_DATE                         8
+#
+# Column 439 - 446      (Start date - YYYYMMDD)
+COUNT.START_DATE                        8
+#
+# Column 447 - 454      (End date - YYYYMMDD)
+COUNT.END_DATE                          8
+#
+# Column  455           (Cycle count? flag)
+COUNT.CYCLE_COUNT_FLAG                  1
+#
+# Column  456           (Template? flag)
+COUNT.TEMPLATE_FLAG                     1
+#
+# Column  457           (Allow edit? flag)
+COUNT.ALLOW_EDIT_FLAG                   1
+#
+# Column  458           (Allow delete? flag)
+COUNT.ALLOW_DELETE_FLAG                 1
+#
+#=============================================================================#
+# Lblmesg Record  42 char's             FUTURE SCALES MANAGEMENT
+#=============================================================================#
+# Column 1 - 2          (LM)
+LBLMESG.IDENTIFIER                      2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+LBLMESG.OPERATION                       1
+#
+# Column 4 - 5          (Result code)
+LBLMESG.RESULT                          2
+#
+# Column 6 - 11         (Message number)
+LBLMESG.MESG_NUM                        6
+#
+# Column 12 - 41        (Description)
+LBLMESG.DESCRIPTION                     30
+#
+# Column  42            (Hold trailing spaces)
+LBLMESG.FILLER                          1
+#
+#=============================================================================#
+# Recipe Record  1042 char's            FUTURE SCALES MANAGEMENT
+#=============================================================================#
+# Column 1 - 2          (RC)
+RECIPE.IDENTIFIER                       2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+RECIPE.OPERATION                        1
+#
+# Column 4 - 5          (Result code)
+RECIPE.RESULT                           2
+#
+# Column 6 - 11         (Message number)
+RECIPE.MESG_NUM                         6
+#
+# Column 12 - 41        (Description)
+RECIPE.DESCRIPTION                      30
+#
+# Column 42 - 1041      (Text)
+RECIPE.TEXT                             1000
+#
+# Column  1042          (Hold trailing spaces)
+RECIPE.FILLER                           1
+#
+#=============================================================================#
+# Offer Record  296 char's              FUTURE SCALES MANAGEMENT
+#=============================================================================#
+# Column 1 - 2          (OF)
+OFFER.IDENTIFIER                        2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+OFFER.OPERATION                         1
+#
+# Column 4 - 5          (Result code)
+OFFER.RESULT                            2
+#
+# Column 6 - 11         (Message number)
+OFFER.MESG_NUM                          6
+#
+# Column 12 - 41        (Description)
+OFFER.DESCRIPTION                       30
+#
+# Column 42 - 295       (Text)
+OFFER.TEXT                              254
+#
+# Column  296           (Hold trailing spaces)
+OFFER.FILLER                            1
+#
+#=============================================================================#
+# Grade Record  31 char's                                             HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (GD)
+GRADE.IDENTIFIER                        2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+GRADE.OPERATION                         1
+#
+# Column 4 - 5          (Result code)
+GRADE.RESULT                            2
+#
+# Column 6 - 7          (Message number)
+GRADE.MESG_NUM                          2
+#
+# Column 8 - 30         (Description)
+GRADE.DESCRIPTION                       23
+#
+# Column  31            (Hold trailing spaces)
+GRADE.FILLER                            1
+#
+#=============================================================================#
+# Stock Record  39 char's                                           STATIC LOAD
+#=============================================================================#
+# Column 1 - 2          (SS)
+STOCK.IDENTIFIER                        2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+STOCK.OPERATION                         1
+#
+# Column 4 - 5          (Result code)
+STOCK.RESULT                            2
+#
+# Column 6 - 15         (Short name for stock type)
+STOCK.STOCK_ID                          10
+#
+# Column 16 - 35        (Description)
+STOCK.DESCRIPTION                       20
+#
+# Column 36 - 39        (Forms per sheet)
+STOCK.FORMS_PER_SHEET                   4
+#
+#=============================================================================#
+# Form Record  47 char's                                            STATIC LOAD
+#=============================================================================#
+# Column 1 - 2          (FM)
+FORM.IDENTIFIER                         2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+FORM.OPERATION                          1
+#
+# Column 4 - 5          (Result code)
+FORM.RESULT                             2
+#
+# Column 6 - 15         (Short name for form type)
+FORM.FORM_ID                            10
+#
+# Column  16            (Form type)
+FORM.TYPE                               1
+#
+# Column 17 - 36        (Description)
+FORM.DESCRIPTION                        20
+#
+# Column 37 - 46        (Stock type used by form)
+FORM.STOCK_ID                           10
+#
+# Column  47            (Hold trailing spaces)
+FORM.FILLER                             1
+#
+#=============================================================================#
+# Marquee (Scale Ad) Record  71 char's  SCALES MANAGEMENT             HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (SA)
+SCALEAD.IDENTIFIER                      2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+SCALEAD.OPERATION                       1
+#
+# Column 4 - 5          (Result code)
+SCALEAD.RESULT                          2
+#
+# Column 6 - 7          (Num associated with marquee message. [01-50])
+SCALEAD.MESG_NUM                        2
+#
+# Column  8-70          (Text displayed on scale marquee when in idle mode)
+SCALEAD.TEXT                            63
+#
+# Column  71            (Hold trailing spaces)
+SCALEAD.FILLER                          1
+#
+#=============================================================================#
+# COOL Class  40 char's                 SCALES MANAGEMENT             HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (REQUIRED - CC)
+COOLCLASS.IDENTIFIER                    2
+#
+# Column 3              (REQUIRED - 1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+COOLCLASS.OPERATION                     1
+#
+# Column 4 - 5          (REQUIRED - Result code)
+COOLCLASS.RESULT                        2
+#
+# Column 6 - 9          (REQUIRED - The COOL class ID - 9999)
+COOLCLASS.COOL_CLASS                    4
+#
+# Column 10 - 39        (Alpha-numeric. The description for this COOL class)
+COOLCLASS.DESCRIPTION                   30
+#
+# Column 40
+COOLCLASS.FILLER                        1
+#
+#=============================================================================#
+# COOL Text  1032 char's                SCALES MANAGEMENT             HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (REQUIRED - CX)
+COOLTEXT.IDENTIFIER                     2
+#
+# Column 3              (REQUIRED - 1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+COOLTEXT.OPERATION                      1
+#
+# Column 4 - 5          (REQUIRED - Result code)
+COOLTEXT.RESULT                         2
+#
+# Column 6 - 11         (REQUIRED - The COOL text ID)
+COOLTEXT.COOL_TEXT_ID                   6
+#
+# Column 12 - 31        (The shortened version of the COOL Text message)
+COOLTEXT.SHORT_TEXT                     20
+#
+# Column 32 - 1031      (The COOL Text message)
+COOLTEXT.LONG_TEXT                      1000
+#
+# Column 1032
+COOLTEXT.FILLER                         1
+#
+#=============================================================================#
+#=====    GROUP II  ======#
+#=============================================================================#
+#=============================================================================#
+# Department Record  43 char's (Sub-dept (4)                          HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (DP)
+DEPT.IDENTIFIER                         2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+DEPT.OPERATION                          1
+#
+# Column 4 - 5          (Result code)
+DEPT.RESULT                             2
+#
+# Column 6 - 9          (Publix sub-department)
+DEPT.DEPT_NUMBER                        4
+#
+# Column 10 - 39        (Publix sub-department description)
+DEPT.DESCRIPTION                        30
+#
+# Column 40 - 43        (Publix department)
+DEPT.MAJDEPT_NUMBER                     4
+#
+#=============================================================================#
+# Category Record  71 char's (Sub(4)Cat(2)Fam(2))                     HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (CA)
+CATEGORY.IDENTIFIER                     2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+CATEGORY.OPERATION                      1
+#
+# Column 4 - 5          (Result code)
+CATEGORY.RESULT                         2
+#
+# Column 6 - 13         (Publix family group (Sub/Cat/Fam))
+CATEGORY.CATEGORY_CODE                  8
+#
+# Column 14 - 43        (Publix family group description)
+CATEGORY.DESCRIPTION                    30
+#
+# Column 44 - 49        (Publix category code (Sub/Cat))
+CATEGORY.FAMILY_GROUP                   6
+#
+# Column 50 - 52        (Tolerance amount)
+CATEGORY.TOLERANCE_AMOUNT               3
+#
+# Column 53 - 55        (Tolerance percent)
+CATEGORY.TOLERANCE_PERCENT              3
+#
+# Column 56 - 58        (Aisle)
+CATEGORY.AISLE                          3
+#
+# Column 59 - 61        (Side)
+CATEGORY.SIDE                           3
+#
+# Column 62 - 64        (Section)
+CATEGORY.SECT                           3
+#
+# Column 65 - 67        (Shelf)
+CATEGORY.SHELF                          3
+#
+# Column 68 - 71        (Maximum difference by family group)
+CATEGORY.USER_NUM4_1                    4
+#
+#=============================================================================#
+# User Record  104 char's                                           STATIC LOAD
+#=============================================================================#
+# Column 1 - 2          (US)
+USER.IDENTIFIER                         2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+USER.OPERATION                          1
+#
+# Column 4 - 5          (Result code)
+USER.RESULT                             2
+#
+# Column 6 - 13         (User name)
+USER.USER_NAME                          8
+#
+# Column 14 - 21        (Password)
+USER.PASSWORD                           8
+#
+# Column 22 - 51        (Full name)
+USER.FULL_NAME                          30
+#
+# Column 52 - 63        (Employee ID)
+USER.EMPLOYEE_ID                        12
+#
+# Column  64            (Default printer)
+USER.PRINTER                            1
+#
+# Column 65 - 72        (Authorization model 1)
+USER.MODEL_1                            8
+#
+# Column 73 - 80        (Authorization model 2)
+USER.MODEL_2                            8
+#
+# Column 81 - 88        (Authorization model 3)
+USER.MODEL_3                            8
+#
+# Column 89 - 96        (Authorization model 4)
+USER.MODEL_4                            8
+#
+# Column 97 - 104       (Authorization model 5)
+USER.MODEL_5                            8
+#
+#=============================================================================#
+# COOL Literal  46 char's               SCALES MANAGEMENT             HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (REQUIRED - LT)
+COOLLITERAL.IDENTIFIER                  2
+#
+# Column 3              (REQUIRED - 1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+COOLLITERAL.OPERATION                   1
+#
+# Column 4 - 5          (REQUIRED - Result code)
+COOLLITERAL.RESULT                      2
+#
+# Column 6 - 9          (REQUIRED - The COOL Literal ID)
+COOLLITERAL.LITERAL_ID                  4
+#
+# Column 10 - 13        (Numeric. The COOL class associated with this COOL Literal)
+COOLLITERAL.COOL_CLASS                  4
+#
+# Column 14 - 15        (Numeric. The scale location associated with this COOL Literal)
+COOLLITERAL.LOCATION_NUMBER             2
+#
+# Column 16 - 45        (The text for this COOL Literal)
+COOLLITERAL.TEXT                        30
+#
+# Column 46  
+COOLLITERAL.FILLER                      1
+#
+#=============================================================================#
+# Country Record  56 char's             SCALES MANAGEMENT             HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (REQUIRED - CN)
+COUNTRY.IDENTIFIER                      2
+#
+# Column 3              (REQUIRED - 1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+COUNTRY.OPERATION                       1
+#
+# Column 4 - 5          (REQUIRED - Result code)
+COUNTRY.RESULT                          2
+#
+# Column 6 - 9          (REQUIRED - Required Field Except for Operation 5))
+COUNTRY.COUNTRY_CODE                    4
+#
+# Column 10 - 14        (An alternate code (abrev) for identifying the country.)
+COUNTRY.ALT_CODE_1                      5
+#
+# Column 15 - 19        (An alternate code (abrev) for identifying the country.)
+COUNTRY.ALT_CODE_2                      5
+#
+# Column 20 - 23        (Numeric. The COOL class associated with this country)
+COUNTRY.COOL_CLASS                      4
+#
+# Column 24 - 25        (Numeric. The scale location associated with this country.)
+COUNTRY.LOCATION_NUMBER                 2
+#
+# Column 26 - 55        (The description for this country)
+COUNTRY.DESCRIPTION                     30
+#
+# Column 56
+COUNTRY.FILLER                          1
+#
+#=============================================================================#
+#=====    GROUP III   ======#
+#=============================================================================#
+#=============================================================================#
+# Supplier Record  288 char.s                                         HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (SU)
+SUPPLIER.IDENTIFIER                     2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=N/A)
+SUPPLIER.OPERATION                      1
+#
+# Column 4 - 5          (Result code)
+SUPPLIER.RESULT                         2
+#
+# Column 6 - 13         (Supplier number)
+SUPPLIER.SUPPLIER_NUMBER                8
+#
+# Column 14 - 22        (Dun & Bradstreet number)
+SUPPLIER.DUNS_NUMBER                    9
+#
+# Column 23 - 28        (Location number; used for Duns plus)
+SUPPLIER.LOC_NUMBER                     6
+#
+# Column 29 - 58        (Supplier name)
+SUPPLIER.NAME                           30
+#
+# Column 59 - 93        (Street address line 1)
+SUPPLIER.STREET_1                       35
+#
+# Column 94 - 128       (Street address line 2)
+SUPPLIER.STREET_2                       35
+#
+# Column 129 - 158      (City)
+SUPPLIER.CITY                           30
+#
+# Column 159 - 160      (State)
+SUPPLIER.STATE                          2
+#
+# Column 161 - 170      (ZIP code)
+SUPPLIER.ZIP_CODE                       10
+#
+# Column 171 - 205      (Representative name)
+SUPPLIER.REP                            35
+#
+# Column 206 - 215      (Telephone number)
+SUPPLIER.PHONE                          10
+#
+# Column  216           (Is this a DSD supplier? flag)
+SUPPLIER.DSD                            1
+#
+# Column  217           (Is this supplier authorized for returns only? flag)
+SUPPLIER.RET_ONLY                       1
+#
+# Column  218           (Round invoice total? flag)
+SUPPLIER.RND_TOTAL                      1
+#
+# Column  219           (Round extended line items? flag)
+SUPPLIER.RND_LINE                       1
+#
+# Column  220           (Round cost and allow before extending? flag)
+SUPPLIER.RND_EACH                       1
+#
+# Column  221           (Allow invoice acceptance without counts? flag)
+SUPPLIER.TOTAL_ACCEPT                   1
+#
+# Column  222           (Allow DEX/NEX style receiving? flag)
+SUPPLIER.USE_STYLES                     1
+#
+# Column  223           (Allow totals only receiving? flag)
+SUPPLIER.TOTAL_ONLY                     1
+#
+# Column  224           (Allow total count receiving? flag)
+SUPPLIER.TOTAL_COUNT                    1
+#
+# Column  225           (Is this a COD supplier? flag)
+SUPPLIER.COD_FLAG                       1
+#
+# Column 226 - 227      (Receiving method used)
+SUPPLIER.USER_NUM4_1                    2
+#
+# Column  228           (Default check-in by UPC or by line item order? flag)
+SUPPLIER.SCAN_MODE                      1
+#
+# Column  229           (Allow receiving by containers? flag)
+SUPPLIER.USE_CONTAINERS                 1
+#
+# Column  230           (Require incoming seal#/allow outgoing seal#? flag)
+SUPPLIER.CAPTURE_SEALS                  1
+#
+# Column  231           (Generate exception for delivered non-ordered items? flag)
+SUPPLIER.RECV_ORDERED_ONLY              1
+#
+# Column  232           (Accept exception items? flag)
+SUPPLIER.ACCEPT_EXCEPTIONS              1
+#
+# Column  233           (Allow misc. charges on deliveries? flag)
+SUPPLIER.ALLOW_DEL_CHARGES              1
+#
+# Column  234           (Allow misc. allowances on deliveries? flag)
+SUPPLIER.ALLOW_DEL_ALLOW                1
+#
+# Column  235           (Allow misc. charges on returns? flag)
+SUPPLIER.ALLOW_RET_CHARGES              1
+#
+# Column  236           (Allow misc. allowances on returns? flag)
+SUPPLIER.ALLOW_RET_ALLOW                1
+#
+# Column  237           (Prompt for supplier cost on receiving? flag)
+SUPPLIER.PROMPT_SUP_COST                1
+#
+# Column  238           (Re-evaluate NEX for auth and cost/price info? flag)
+SUPPLIER.NEX_EVAL                       1
+#
+# Column  239           (Count by cases(C) or units(u) on receiving? flag)
+SUPPLIER.COUNT_PROMPT                   1
+#
+# Column  240           (Can items be added to DEX invoices? flag)
+SUPPLIER.ALLOW_ADD_ITEMS                1
+#
+# Column  241           (Allow auto print of DEX invoices? flag)
+SUPPLIER.DEX_AUTO_PRINT                 1
+#
+# Column  242           (Can the store create orders for this supplier? flag)
+SUPPLIER.STORE_CAN_ORDER                1
+#
+# Column  243           (Will SDC generate invoices for this supplier's sales? flag)
+SUPPLIER.CONSIGNMENT                    1
+#
+# Column  244           (Will SDC generate UCS 852 transactions for this supplier's sales? flag)
+SUPPLIER.GEN_852                        1
+#
+# Column  245           (Ship more than one invoice per PO? flag)
+SUPPLIER.MANY_INV_PER_PO                1
+#
+# Column  246           (Invoice numbers generated automatically? flag)
+SUPPLIER.GEN_INVOICE_NUMBER             1
+#
+# Column  247           (Default order units for supplier as eaches or cases? flag)
+SUPPLIER.ORDER_EACH                     1
+#
+# Column  248           (Eaches round to next full case or use fractional cases? flag)
+SUPPLIER.RND_ORDER_CASES                1
+#
+# Column 249            (Obsolete supplier? flag)
+SUPPLIER.USER_BIT_1                     1
+#
+# Column 250            (Allow detail receiving? flag)
+SUPPLIER.DETAIL                         1
+#
+# Column 251            (Is supplier a warehouse? flag)
+SUPPLIER.WAREHOUSE_FLAG                 1
+#
+# Column 252 - 253      (Supplier Type)
+SUPPLIER.USER_NUM4_2                    2
+#============================================================================#
+# 09/06/2013 - Brian Otis - Add "Next Day" and "Alcohol" Supplier attributes #
+#							and reduced filler to 33.						 #
+#============================================================================#
+#Column 254				(Next Day Supplier)
+SUPPLIER.USER_BIT_4						1
+#
+#Column 255				(Alcohol Supplier)
+SUPPLIER.USER_BIT_5						1
+#
+# Column 256 - 288      (Hold trailing spaces)
+SUPPLIER.FILLER                         33
+#
+#=============================================================================#
+# COOL Text List  57 char's             SCALES MANAGEMENT             HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (REQUIRED - CL)
+COOLTEXTLIST.IDENTIFIER                 2
+#
+# Column 3              (REQUIRED - 1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+COOLTEXTLIST.OPERATION                  1
+#
+# Column 4 - 5          (REQUIRED - Result code)
+COOLTEXTLIST.RESULT                     2
+#
+# Column 6 - 11         (REQUIRED - The COOL list ID; associated list will be created if it doesn't already exist)
+COOLTEXTLIST.COOL_LIST_ID               6
+#
+# Column 12 - 17        (REQUIRED - The COOL text ID)
+COOLTEXTLIST.COOL_TEXT_ID               6
+#
+# Column 18 - 21        (Numeric. The COOL class associated with this COOL Text List)
+COOLTEXTLIST.COOL_CLASS                 4
+#
+# Column 22 - 51        (The description for this COOL Text List)
+COOLTEXTLIST.DESCRIPTION                30
+#
+# Column 52 - 55        (The list will be sorted ascending by this value)
+COOLTEXTLIST.SORT_ORDER                 4
+#
+# Column 56             (The COOL Text List type.  0=Scales, 1=Shelf label)
+COOLTEXTLIST.TYPE                       1
+#
+# Column 57
+COOLTEXTLIST.FILLER                     1
+#
+#=============================================================================#
+#=====    GROUP IV    ======#
+#=============================================================================#
+#=============================================================================#
+# SKU Record  236 char's                                              HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (REQUIRED - SK)
+SKU.IDENTIFIER                          2
+#
+# Column  3             (REQUIRED - 1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=N/A)
+SKU.OPERATION                           1
+#
+# Column 4 - 5          (REQUIRED - Result code)
+SKU.RESULT                              2
+#
+# Column 6 - 18         (REQUIRED - SKU number)
+SKU.SKU                                 13
+#
+# Column 19 - 31        (Primary item ID)
+SKU.PRIMARY_ITEM_ID                     13
+#
+# Column  32            (SKU type)
+SKU.SKU_TYPE                            1
+#
+# Column 33 - 36        (Pack Qty of PRIMARY_ITEM_ID)
+SKU.PRIMARY_PACK_QTY                    4
+#
+# Column 37 - 44        (Primary supplier)
+SKU.PRIMARY_SUPPLIER                    8
+#
+# Column 45 - 74        (REQUIRED - Description)
+SKU.DESCRIPTION                         30
+#
+# Column  75            (Is this SKU a DSD item? flag)
+SKU.USER_BIT_5                          1
+#
+# Column  76            (Is this item auth for this store? flag - IR'ed to SP.RECV_AUTH)
+SKU.AUTHORIZED                          1
+#
+# Column  77            (Is this an active POS item? flag)
+SKU.ACTIVE                              1
+#
+# Column  78            (Is this item discontinued? flag)
+SKU.DISCONTINUED                        1
+#
+# Column  79            (Is this a seasonal item? flag)
+SKU.USER_BIT_2                          1
+#
+# Column 80 - 83        (Seasonal begin date - MMDD)
+SKU.USER_DATE_5                         4
+#
+# Column 84 - 87        (Seasonal end date - MMDD)
+SKU.USER_DATE_6                         4
+#
+# Column 88 - 95        (Deauthorization date - YYYYMMDD)
+SKU.USER_DATE_1                         8
+#
+# Column  96            (Show on deactivation report? flag)
+SKU.USER_BIT_3                          1
+#
+# Column 97 - 104       (Deactivation date - YYYYMMDD)
+SKU.USER_DATE_2                         8
+#
+# Column 105 - 112      (Reset deactivation date - YYYYMMDD)
+SKU.USER_DATE_3                         8
+#
+# 07/19/2005 PJMC - Replaces SKU.USER_BIT_4 / ignore movement
+# Column  113           (Allow System Deactivation? 0 & 3 = yes; 1 & 2 = no)
+SKU.USER_NUM4_6                         1
+#
+# Column  114           (Is this a special order item? flag)
+SKU.SPECIAL_ORDER                       1
+#
+# Column  115           (Space to make status one byte)
+SKU.FILLER                              1
+#
+# Column  116           (Status)
+SKU.STATUS                              1
+#
+# Column 117 - 124      (REQUIRED - SUB/CAT/FAM)
+SKU.CATEGORY_CODE                       8
+#
+# Column 125 - 128      (Cat(2)/Fam(2) (old user2))
+SKU.USER_NUM4_1                         4
+#
+# Column 129 - 134      (Report code)
+SKU.REPORT_CODE                         6
+#
+# Column 135 - 142      (Cycle group)
+SKU.CYCLE_GROUP                         8
+#
+# Column 143 - 146      (Department number)
+SKU.DEPT_NUMBER                         4
+#
+# Column  147           (Does the store order this item? flag - Mirrored by IR to SP.ORDER_AUTH)
+SKU.STORE_CAN_ORDER                     1
+#
+# Column  148           (Can this item be ordered automatically? flag)
+SKU.AUTO_ORDER                          1
+#
+# Column  149           (Order sanity check? flag)
+SKU.DISABLE_SANITY_CHK                  1
+#
+# Column 150 - 158      (Warehouse supplier)
+SKU.USER_NUM9_1                         9
+#
+# Column  159           (Is this item on promotion? flag)
+SKU.PROMO_FLAG                          1
+#
+# Column 160 - 161      (Promotion type)
+SKU.PROMO_TYPE                          2
+#
+# Column  162           (Can credit be received from reclamation for this item? flag)
+SKU.RECLAIM_OK                          1
+#
+# Column  163           (Are inventory and valuation quantities maintained? flag)
+SKU.PERPETUAL_FLAG                      1
+#
+# Column 164 - 167      (Inventory unit of measure code)
+SKU.INV_UM_CODE                         4
+#
+# Column  168           (Is this a Hazardous item? flag)
+SKU.USER_BIT_6                          1
+#
+# Column  169           (Is this a parent deli SKU? flag)
+SKU.USER_BIT_1                          1
+#
+# Column 170 - 182      (Battery Type)
+SKU.USER_STRING30_1                     13
+#
+# Column 183 - 186      (Child deli SKU contribution amount)
+SKU.USER_NUM4_2                         4
+#
+# Column  187           (Is this a random weight item? flag - IR'ed to SP records)
+SKU.USER_BIT_9                          1
+#
+# Column 188 - 191      (REQUIRED - if SCO = 1(default) Order group - IR'ed to SP.ORDER_GROUP)
+SKU.USER_NUM4_8                         4
+#
+# Column 192 - 199      (Pack size for supplies and ingredients)
+SKU.PACK_SIZE                           8
+#
+# Column 200 - 201      (Item Type)
+SKU.USER_NUM4_4                         2
+#
+# 07/19/2005 PJMC - This field used to mean "core item?"
+# Column 202            (Allow Manager Deact)
+SKU.USER_BIT_12                         1
+#
+# Column 203 - 204      (Replenishment Method)
+SKU.USER_NUM4_3                         2
+#
+# Column 205 - 213      (Estimated avg cost;4 decimals assumed; non-negative)
+SKU.AVERAGE_COST                        9
+#
+# 07/20/2005 PJMC - Field used for system deactivation
+# Column 214 - 217      (Lack of movement by SKU)
+SKU.USER_NUM4_7                         4
+#
+# 06/17/2009 PTEP - Field used to hold SC order review date
+# Column 218 - 225      (SC order review date - YYYYMMDD)
+SKU.USER_DATE_10                        8
+#
+# Column 226 - 234      (DOT labeling/type)
+SKU.PARAM_GROUP_2                       9
+#
+# Column 235 - 236      (Hold trailing spaces)
+SKU.FILLER                              2
+#
+#=============================================================================#
+# Order Group Record  38 char's                                       HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (OG)
+ORDGRP.IDENTIFIER                       2
+#
+# Column 3              (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+ORDGRP.OPERATION                        1
+#
+# Column 4 - 5          (Result code)
+ORDGRP.RESULT                           2
+#
+# Column 6 - 13         (Supplier number)
+ORDGRP.SUPPLIER_NUMBER                  8
+#
+# Column 14 - 17        (Order group)
+ORDGRP.ORDER_GROUP                      4
+#
+# Column 18 - 37        (Description)
+ORDGRP.DESCRIPTION                      20
+#
+# Column  38            (Hold trailing spaces)
+ORDGRP.FILLER                           1
+#
+#=============================================================================#
+# Group Allowance Header record  52 char's      FUTURE HOST
+#=============================================================================#
+# Column 1 - 2          (GH)
+GRPALLHD.IDENTIFIER                     2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+GRPALLHD.OPERATION                      1
+#
+# Column 4 - 5          (Result code)
+GRPALLHD.RESULT                         2
+#
+# Column 6 - 13         (Supplier number)
+GRPALLHD.SUPPLIER_NUMBER                8
+#
+# Column 14 - 21        (Allowance group)
+GRPALLHD.ALLOW_GROUP                    8
+#
+# Column 22 - 51        (Description)
+GRPALLHD.DESCRIPTION                    30
+#
+# Column  52            (Hold trailing spaces)
+GRPALLHD.FILLER                         1
+#
+#=============================================================================#
+#=====    GROUP V    ======#
+#=============================================================================#
+#=============================================================================#
+# Item Record  270 char's                                             HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (REQUIRED - IT)
+ITEM.IDENTIFIER                         2
+#
+# Column  3             (REQUIRED - 1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=N/A)
+ITEM.OPERATION                          1
+#
+# Column 4 - 5          (REQUIRED - Result code)
+ITEM.RESULT                             2
+#
+# Column 6 - 18         (REQUIRED - SKU number)
+ITEM.SKU                                13
+#
+# Column 19 - 31        (REQUIRED - Item ID)
+ITEM.ITEM_ID                            13
+#
+# Column  32            (Item type - (N, V, S, D, R, I, P, E))
+ITEM.ITEM_TYPE                          1
+#
+# Column  33            (REQUIRED must be - 0 > POS item type < 8 )
+ITEM.POS_ITEM_TYPE                      1
+#
+# Column 34 - 51        (REQUIRED - POS description)
+ITEM.POS_DESCRIPTION                    18
+#
+# Column 52 - 53        (Space to make UM code 2 bytes)
+ITEM.FILLER                             2
+#
+# Column 54 - 55        (Unit of measurement code)
+ITEM.UM_CODE                            2
+#
+# Column 56 - 63        (Unit of measurement factor)
+ITEM.UM_FACTOR                          8
+#
+# Column 64 - 71        (Pack size description)
+ITEM.PACK_SIZE                          8
+#
+# Column 72 - 75        (Receiving unit/ selling unit conversion)
+ITEM.RECV_SELL_CONV                     4
+#
+# Column 76 - 81        (Inventory units)
+ITEM.INV_UNITS                          6
+#                 ----pricing fields----
+# Column  82            (must be 0 > Current price method < 4)
+ITEM.PRICE_METHOD                       1
+#
+# Column 83 - 88        (Current retail price)
+ITEM.SELL_PRICE                         6
+#
+# Column 89 - 90        (must be Current retail price multiple < 100 and > 1 if sku.type = M)
+ITEM.SELL_MULTIPLE                      2
+#
+# Column 91 - 96        (Current receiving price)
+ITEM.BILL_PRICE                         6
+#
+# Column 97 - 98        (Current receiving price multiple)
+ITEM.BILL_MULTIPLE                      2
+#
+# Column 99 - 104       (Current deal price)
+ITEM.LIMIT_PRICE                        6
+#
+# Column 105 - 106      (Current deal qty - threshold or limit)
+ITEM.LIMIT_QTY                          2
+#
+# Column 107 - 109      (Group promotion deal qty)
+ITEM.USER_NUM4_1                        3
+#
+# Column  110           (Group promotion price method)
+ITEM.USER_CHAR_1                        1
+#
+# Column 111 - 116      (Group promotion deal price)
+ITEM.USER_PRICE_1                       6
+#
+# Column 117 - 118      (Group promotion mix-match number)
+ITEM.FILLER                        		2
+#
+# Column 119            (Group promotion group ID)
+ITEM.USER_NUM4_3                        1
+#
+# Column 120            (Space)
+ITEM.FILLER                             1
+#
+# Column 121 - 127      (Future use - Last deal price)
+ITEM.USER_PRICE_2                       7
+#
+# Column 128 - 129      (Last deal quantity)
+ITEM.USER_NUM4_4                        2
+#
+# Column 130 - 131      (must be Mixmatch number < 99)
+ITEM.MIX_MATCH_NUMBER                   2
+#
+# Column  132           (Price reason)
+ITEM.PRICE_REASON                       1
+#
+# Column  133           (Used for HOST_PRICE_REQ for ISS; PRICE_REQ populated by ITEMRULE)
+ITEM.USER_BIT_9                         1
+#
+# Column 134 - 138      (Used for HOST_PROMO_SAVINGS_AMT for ISS; PROMO_SAVINGS_AMT (USER_NUM9_3) populated by ITEMRULE)
+ITEM.USER_NUM9_4                        5
+#
+# Column  139           (Used for HOST_PROMO_SAVINGS_TYPE for ISS; PROMO_SAVINGS_TYPE (USER_BIT_12) populated by ITEMRULE)
+ITEM.USER_BIT_13                        1
+#                       ----special fields----
+# Column 140 - 152      (must be Link code < 10000)
+ITEM.LINK_CODE                          13
+#
+# Column 153 - 159      (Deposit amount)
+ITEM.DEPOSIT                            7
+#                       ----coupon  and discount fields----
+# Column 160 - 162      (Previous value of ITEM.COUPON_FAMILY)
+ITEM.PREV_COUPON_FAMILY                 3
+#
+# Column 163 - 165      (Used for lottery tickets)
+ITEM.COUPON_FAMILY                      3
+#
+# Column  166           (No coupons accepted for this item? flag)
+ITEM.NO_COUPON                          1
+#
+# Column  167           (An electronic coupon is available for this item? flag)
+ITEM.ELEC_COUPON                        1
+#
+# Column  168           (Coupon value multiplication allowed? flag)
+ITEM.COUPON_MULT                        1
+#
+# Column 169 - 172      (Retail price is reduced by this amount)
+ITEM.PRICE_DISC_AMOUNT                  4
+#
+# Column 173 - 176      (Retail price is reduced by this percentage)
+ITEM.PRICE_DISC_PCT                     4
+#
+# Column  177           (Is this item non-discountable? flag)
+ITEM.NON_DISCOUNTABLE                   1
+#
+# Column  178           (Message printed on receipt when discounts are detected)
+ITEM.DISC_PRINT                         1
+#                       ----tax and flag fields----
+# Column 179 - 183      (Amount of excise tax included in retail of this item)
+ITEM.TAX_EXCISE                         5
+#
+# Column  184           (Does tax rate 1 apply to this item? flag)
+ITEM.TAX_1                              1
+#
+# Column  185           (Does tax rate 2 apply to this item? flag)
+ITEM.TAX_2                              1
+#
+# Column  186           (Does tax rate 3 apply to this item? flag)
+ITEM.TAX_3                              1
+#
+# Column  187           (Does tax rate 4 apply to this item? flag)
+ITEM.TAX_4                              1
+#
+# Column  188           (Does tax rate 5 apply to this item? flag)
+ITEM.TAX_5                              1
+#
+# Column  189           (Does tax rate 6 apply to this item? flag)
+ITEM.TAX_6                              1
+#
+# Column  190           (Does tax rate 7 apply to this item? flag)
+ITEM.TAX_7                              1
+#
+# Column  191           (Is this item eligible for WIC-CVV? flag)
+ITEM.USER_BIT_8                         1
+#
+# Column 192 - 197      (Amount of retail not subjected to sales tax)
+ITEM.TAX_EXEMPT_AMOUNT                  6
+#
+# Column  198           (Manual Tax)
+ITEM.USER_BIT_1                         1
+#
+# Column  199           (Can item be bought with food stamps? flag)
+ITEM.FOOD_STAMP                         1
+#
+# Column  200           (Does item qualify for trading stamps? flag)
+ITEM.TRADING_STAMP                      1
+#
+# Column  201           (Is this item eligible for WIC? flag)
+ITEM.WIC_FLAG                           1
+#
+# Column  202           (Is this a liquor item? flag)
+ITEM.USER_BIT_2                         1
+#
+# Column  203           (Is this a tobacco item? flag)
+ITEM.USER_BIT_3                         1
+#
+# Column  204           (Used for HOST_SCALE_ITEM for ISS; SCALE_ITEM populated by ITEMRULE)
+ITEM.USER_BIT_7                         1
+#
+# Column  205           (Do not allow a quantity to be entered? flag)
+ITEM.QTY_PROHIBIT                       1
+#
+# Column  206           (Used for HOST_QTY_REQ for ISS; QTY_REQ populated by ITEMRULE)
+ITEM.USER_BIT_10                        1
+#
+# Column  207           (Sale is prohibited? flag)
+ITEM.NOT_FOR_SALE                       1
+#
+# Column  208           (Sale is restricted? flag)
+ITEM.RESTRICTED_SALE                    1
+#
+# Column  209           (Cashier must verify total? flag)
+ITEM.VISUAL_VERIFY                      1
+#
+# Column  210           (Tag color)
+ITEM.USER_NUM4_5                        1
+#
+# Column  211           (Tag size)
+ITEM.USER_NUM4_6                        1
+#
+# Column  212           (Is item on manager special? flag)
+ITEM.USER_BIT_4                         1
+#
+# Column 213 - 220      (Beginning manager special date - YYYYMMDD)
+ITEM.USER_DATE_1                        8
+#
+# Column 221 - 223      (Code used in determining weight of package)
+ITEM.TARE_CODE                          3
+#
+# Column  224           (Retail random weight)
+ITEM.USER_BIT_16                        1
+#
+# Column  225 - 230     (Numeric. COOL List ID)
+ITEM.COOL_LIST_ID                       6
+#
+# Column  231 - 236     (Default COOL Text ID, tildes (~) FOR FUTURE USE.)
+ITEM.COOL_TEXT_ID                       6
+#
+# Column  237 - 240     (Numeric. COOL class)
+ITEM.COOL_CLASS                         4
+#
+# Column  241 - 246     (COOL Pretext ID, tildes (~) FOR FUTURE USE.)
+ITEM.COOL_PRETEXT_ID                    6
+#
+# Column  247           (0=Not forced, 1=forced)
+ITEM.FORCED_COOL                        1
+#
+# Column 248            (FSA-RX)
+ITEM.USER_BIT_19                        1
+#
+# Column 249            (FSA-OTC)
+ITEM.USER_BIT_21                        1
+#
+# Column 250            (Age restriction category)
+ITEM.USER_NUM4_7                        1
+#
+# Column 251 - 253      (Group promotion mix-match number)
+ITEM.USER_NUM4_2                        3
+#
+# Column 254 - 270      (Hold trailing spaces)
+ITEM.FILLER                             17
+#
+#=============================================================================#
+# Poll Schedule Record  116 char's                                    HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (PL)
+POLL.IDENTIFIER                         2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+POLL.OPERATION                          1
+#
+# Column 4 - 5          (Result code)
+POLL.RESULT                             2
+#
+# Column 6 - 21         (Description)
+POLL.DESCRIPTION                        16
+#
+# Column 22 - 28        (Supplier number)
+POLL.SUPPLIER_NUMBER                    7
+#
+# Column 29 - 36        (Effective date - YYYYMMDD)
+POLL.EFFECTIVE_DATE                     8
+#
+# Column  37            (Polling day)
+POLL.POLL_DAY                           1
+#
+# Column 38 - 43        (Polling time - HHMMSS)
+POLL.POLL_TIME                          6
+#
+# Column 44 - 46        (Create order lead time)
+POLL.CREATE_LEAD_TIME                   3
+#
+# Column 47 - 49        (Delivery lag time)
+POLL.DELIVERY_LAG_TIME                  3
+#
+# Column 50 - 51        (Hours after delivery until available)
+POLL.WORKED_LAG_TIME                    2
+#
+# Column  52            (Can promotion items be ordered on this order? flag)
+POLL.ORDER_PROMOTED                     1
+#
+# Column  53            (Can supply items be ordered on this order? flag)
+POLL.ORDER_SUPPLIES                     1
+#
+# Column  54            (Should orders be filled from backroom, if available? flag)
+POLL.USE_BACKROOM                       1
+#
+# Column  55            (Should backroom be flushed after order is finalized? flag)
+POLL.FLUSH_BACKROOM                     1
+#
+# Column  56            (Should previous order quantity be decremented from order? flag)
+POLL.USE_PREV_ORDER                     1
+#
+# Column 57 - 58        (Order group of items that MUST be ordered on this delivery 1)
+POLL.MUST_ORDGRP_1                      2
+#
+# Column 59 - 60        (Order group of items that MUST be ordered on this delivery 2)
+POLL.MUST_ORDGRP_2                      2
+#
+# Column 61 - 62        (Order group of items that MUST be ordered on this delivery 3)
+POLL.MUST_ORDGRP_3                      2
+#
+# Column 63 - 64        (Order group of items that MUST be ordered on this delivery 4)
+POLL.MUST_ORDGRP_4                      2
+#
+# Column 65 - 66        (Order group of items that MUST be ordered on this delivery 5)
+POLL.MUST_ORDGRP_5                      2
+#
+# Column 67 - 68        (Order group of items that MUST be ordered on this delivery 6)
+POLL.MUST_ORDGRP_6                      2
+#
+# Column 69 - 70        (Order group of items that MUST be ordered on this delivery 7)
+POLL.MUST_ORDGRP_7                      2
+#
+# Column 71 - 72        (Order group of items that MUST be ordered on this delivery 8)
+POLL.MUST_ORDGRP_8                      2
+#
+# Column 73 - 74        (Order group of items that MUST be ordered on this delivery 9)
+POLL.MUST_ORDGRP_9                      2
+#
+# Column 75 - 76        (Order group of items that MUST be ordered on this delivery 10)
+POLL.MUST_ORDGRP_10                     2
+#
+# Column 77 - 78        (Order group of items that MUST NOT be ordered on this delivery 1)
+POLL.MUST_NOT_ORDGRP_1                  2
+#
+# Column 79 - 80        (Order group of items that MUST NOT be ordered on this delivery 2)
+POLL.MUST_NOT_ORDGRP_2                  2
+#
+# Column 81 - 82        (Order group of items that MUST NOT be ordered on this delivery 3)
+POLL.MUST_NOT_ORDGRP_3                  2
+#
+# Column 83 - 84        (Order group of items that MUST NOT be ordered on this delivery 4)
+POLL.MUST_NOT_ORDGRP_4                  2
+#
+# Column 85 - 86        (Order group of items that MUST NOT be ordered on this delivery 5)
+POLL.MUST_NOT_ORDGRP_5                  2
+#
+# Column 87 - 88        (Order group of items that MUST NOT be ordered on this delivery 6)
+POLL.MUST_NOT_ORDGRP_6                  2
+#
+# Column 89 - 90        (Order group of items that MUST NOT be ordered on this delivery 7)
+POLL.MUST_NOT_ORDGRP_7                  2
+#
+# Column 91 - 92        (Order group of items that MUST NOT be ordered on this delivery 8)
+POLL.MUST_NOT_ORDGRP_8                  2
+#
+# Column 93 - 94        (Order group of items that MUST NOT be ordered on this delivery 9)
+POLL.MUST_NOT_ORDGRP_9                  2
+#
+# Column 95 - 96        (Order group of items that MUST NOT be ordered on this delivery 10)
+POLL.MUST_NOT_ORDGRP_10                 2
+#
+# Column 97 - 98        (Order group of items that CAN be ordered on this delivery 1)
+POLL.ALLOWED_ORDGRP_1                   2
+#
+# Column 99 - 100       (Order group of items that CAN be ordered on this delivery 2)
+POLL.ALLOWED_ORDGRP_2                   2
+#
+# Column 101 - 102      (Order group of items that CAN be ordered on this delivery 3)
+POLL.ALLOWED_ORDGRP_3                   2
+#
+# Column 103 - 104      (Order group of items that CAN be ordered on this delivery 4)
+POLL.ALLOWED_ORDGRP_4                   2
+#
+# Column 105 - 106      (Order group of items that CAN be ordered on this delivery 5)
+POLL.ALLOWED_ORDGRP_5                   2
+#
+# Column 107 - 108      (Order group of items that CAN be ordered on this delivery 6)
+POLL.ALLOWED_ORDGRP_6                   2
+#
+# Column 109 - 110      (Order group of items that CAN be ordered on this delivery 7)
+POLL.ALLOWED_ORDGRP_7                   2
+#
+# Column 111 - 112      (Order group of items that CAN be ordered on this delivery 8)
+POLL.ALLOWED_ORDGRP_8                   2
+#
+# Column 113 - 114      (Order group of items that CAN be ordered on this delivery 9)
+POLL.ALLOWED_ORDGRP_9                   2
+#
+# Column 115 - 116      (Order group of items that CAN be ordered on this delivery 10)
+POLL.ALLOWED_ORDGRP_10                  2
+#
+#=============================================================================#
+# Group Allowance Record 80 char's     FUTURE HOST
+#=============================================================================#
+# Column 1 - 2          (GP)
+GRPALLOW.IDENTIFIER                     2
+#
+# Column 3 - 9          (1=Add,2=Del all for Sup/Grp&Add this one, 3=Del All for Sup/Grp)
+GRPALLOW.OPERATION                      1
+#
+# Column 10 - 16        (Result code)
+GRPALLOW.RESULT                         2
+#
+# Column 17 - 24        (Supplier number)
+GRPALLOW.SUPPLIER_NUMBER                8
+#
+# Column 25 - 32        (Allowance group)
+GRPALLOW.ALLOW_GROUP                    8
+#
+# Column 33 - 36        (Quantity break amount)
+GRPALLOW.QTY_BREAK                      4
+#
+# Column 37 - 44        (Item allowance per case)
+GRPALLOW.ALLOW_AMOUNT                   8
+#
+# Column 45 - 52        (Beginning date when allowance should be applied - YYYYMMDD)
+GRPALLOW.BEGIN_DATE                     8
+#
+# Column 53 - 60        (Ending date when allowance should be removed - YYYYMMDD)
+GRPALLOW.END_DATE                       8
+#
+# Column 61 - 63        (Allowance type)
+GRPALLOW.TYPE                           3
+#
+# Column 64 - 79        (Supplier's reference number)
+GRPALLOW.REF_NUMBER                     16
+#
+# Column  80            (Apply to all or just to those exceeding quantity break? flag)
+GRPALLOW.APPLY_TO_ALL                   1
+#
+#=============================================================================#
+#=====    GROUP VI    ======#
+#=============================================================================#
+#=============================================================================#
+# Package Record  65 char's                                           HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (REQUIRED - PK)
+PACKAGE.IDENTIFIER                      2
+#
+# Column  3             (REQUIRED - 1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=Clear All)
+PACKAGE.OPERATION                       1
+#
+# Column 4 - 5          (REQUIRED - Result code)
+PACKAGE.RESULT                          2
+#
+# Column 6 - 18         (REQUIRED - Added to pending table only)
+PACKAGE.SKU                             13
+#
+# Column 19 - 31        (REQUIRED - Package ID)
+PACKAGE.PACK_ID                         13
+#
+# Column  32            (REQUIRED - Package type - Item, SKU or composition)
+PACKAGE.PACK_TYPE                       1
+#
+# Column 33 - 36        (REQUIRED - Package quantity)
+PACKAGE.PACK_QTY                        4
+#
+# Column 37 - 43        (Height of the package)                    (Future Use)
+#PACKAGE.HEIGHT                          7
+PACKAGE.FILLER                          7
+#
+# Column 44 - 50        (Width of the package)                     (Future Use)
+#PACKAGE.WIDTH                           7
+PACKAGE.FILLER                          7
+#
+# Column 51 - 57        (Depth of the package)                     (Future Use)
+#PACKAGE.DEPTH                           7
+PACKAGE.FILLER                          7
+#
+# Column 58 - 65        (Weight of the package)                    (Future Use)
+#PACKAGE.WEIGHT                          8
+PACKAGE.FILLER                          8
+#
+#=============================================================================#
+# Item Location Record  87 char's                                     HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (REQUIRED - IL)
+ITEMLOC.IDENTIFIER                      2
+#
+# Column  3             (REQUIRED - 1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=N/A)
+ITEMLOC.OPERATION                       1
+#
+# Column 4 - 5          (REQUIRED - Result code)
+ITEMLOC.RESULT                          2
+#
+# Column 6 - 18         (REQUIRED - Added to pending table only)
+ITEMLOC.SKU                             13
+#
+# Column 19 - 31        (REQUIRED - Item ID)
+ITEMLOC.ITEM_ID                         13
+#
+# Column  32            (REQUIRED - Location record)
+ITEMLOC.LOCATION                        1
+#
+# Column 33 - 35        (Aisle)
+ITEMLOC.AISLE                           3
+#
+# Column 36 - 38        (Side)
+ITEMLOC.SIDE                            3
+#
+# Column 39 - 41        (Section)
+ITEMLOC.SECT                            3
+#
+# Column 42 - 44        (Shelf)
+ITEMLOC.SHELF                           3
+#
+# Column 45 - 46        (Number of product facings)
+ITEMLOC.FACINGS                         2
+#
+# Column 47 - 54        (Shelf capacity in inventory units)
+ITEMLOC.CAPACITY                        8
+#
+# Column 55 - 64        (Form ID for form type 1)
+ITEMLOC.FORM_ID_1                       10
+#
+# Column 65 - 66        (The master quantity for form type 1)
+ITEMLOC.FORM_QTY_1                      2
+#
+# Column  67            (Is this item in multiple locations? flag)
+ITEMLOC.ALT_LOC_FLAG                    1
+#
+# Column 68 - 87        (Hold trailing spaces)
+ITEMLOC.FILLER                          20
+#
+#=============================================================================#
+# Scale PLU Record  246 char's          SCALES MANAGEMENT             HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (SC)
+SCALEPLU.IDENTIFIER                     2
+#
+# Column  3             (1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=N/A)
+SCALEPLU.OPERATION                      1
+#
+# Column 4 - 5          (Result code)
+SCALEPLU.RESULT                         2
+#
+# Column 6 - 18         (Added to pending table only)
+SCALEPLU.SKU                            13
+#
+# Column 19 - 31        (Item ID)
+SCALEPLU.ITEM_ID                        13
+#
+# Column 32 - 37        (PLU number)
+SCALEPLU.PLU_NUM                        6
+#
+# Column 38 - 39        (Scale's location number)
+SCALEPLU.LOCATION_NUMBER                2
+#
+# Column 40 - 71        (First Line of Item Description)
+SCALEPLU.DESCRIP_TEXT_1                 32
+#
+# Column 72 - 103       (Second Line of Item Description)
+SCALEPLU.DESCRIP_TEXT_2                 32
+#
+# Column 104            (Item is inactive 0 or active 1 on scales)
+SCALEPLU.ACTIVE                         1
+#
+# Column 105            (Type of PLU)
+SCALEPLU.PLU_TYPE                       1
+#
+# Column 106            (Force operator to enter a price at scale)
+SCALEPLU.SCALE_FORCED_PRICE             1
+#
+# Column 107            (Force operator to enter a tare at scale)
+SCALEPLU.SCALE_FORCED_TARE              1
+#
+# Column 108 - 111      (Tare 1 of a random weight item)
+SCALEPLU.TARE_1                         4
+#
+# Column 112 - 115      (Oz. value of net weight for a package sold by eaches when a uniform weight)
+SCALEPLU.NET_WEIGHT	                    4
+#
+# Column 116 - 118      (Number of days from packaging date until product expires)
+SCALEPLU.SHELF_LIFE_DAYS                3
+#
+# Column 119 - 120      (Controls type of UPC printed by Floral or Produce II scales)
+SCALEPLU.MISC_MESG_NUM                  2
+#
+# Column 121 - 122      (Grade message number)
+SCALEPLU.GRADE_MESG_NUM                 2
+#
+# Column 123 - 128      (Code indentifying ingredient text, recipe text, or any block of text associated with item )
+SCALEPLU.INGREDIENT_NUMBER              6
+#
+# Column 129 - 134      (Right-most 6 digits of SKU, right-justified, and left-filled with zeros)
+SCALEPLU.COOL_LIST_ID                   6
+#
+# Column 135 - 140      (Calorie data)
+SCALEPLU.USER_NUM9_2                  	6
+#
+# Column 141 - 141      (inverted print)
+SCALEPLU.USER_NUM4_1                    1
+#
+# Column 142 - 146      (Tare 3 of a random weight item (three digit))
+SCALEPLU.TARE_4                         5
+#
+# Column 147            (Indcates records that should be ignored)
+SCALEPLU.FILLER                         100
+#
+#=============================================================================#
+#=====    GROUP VII    ======#
+#=============================================================================#
+#=============================================================================#
+# Supplier Pack Record  93 char's                                     HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (REQUIRED - SP)
+SUPPACK.IDENTIFIER                      2
+#
+# Column  3             (REQUIRED - 1=Add, 2=Replace, 3=Delete, 4=Upd/Add, 5=N/A)
+SUPPACK.OPERATION                       1
+#
+# Column 4 - 5          (REQUIRED - Result code)
+SUPPACK.RESULT                          2
+#
+# Column 6 - 18         (REQUIRED - Added to pending table only)
+SUPPACK.SKU                             13
+#
+# Column 19 - 31        (REQUIRED - Package ID)
+SUPPACK.PACK_ID                         13
+#
+# Column  32            (REQUIRED - Package type - Item, SKU or composition)
+SUPPACK.PACK_TYPE                       1
+#
+# Column 33 - 36        (REQUIRED - Package quantity)
+SUPPACK.PACK_QTY                        4
+#
+# Column 37 - 44        (REQUIRED - Supplier number)
+SUPPACK.SUPPLIER_NUMBER                 8
+#
+# Column 45 - 57        (Order code)
+SUPPACK.ORDER_CODE                      13
+#
+# Column  58            (Is this the primary package for this package type? flag)
+SUPPACK.PRIMARY_PACKAGE                 1
+#
+# Column  59            (Sent in load, then maintained by ITEMRULE)
+SUPPACK.RANDOM_WEIGHT                   1
+#
+# Column  60            (Sent in load, then maintained by ITEMRULE)
+SUPPACK.ORDER_AUTH                      1
+#
+# Column  61            (Sent in load, then maintained by ITEMRULE)
+SUPPACK.RECV_AUTH                       1
+#
+# Column 62 - 65        (Sent in load, then maintained by ITEMRULE)
+SUPPACK.ORDER_GROUP                     4
+#
+# Column 66 - 73        (Package cost)
+SUPPACK.COST                            8
+#
+# Column 74 - 81        (Allowance group)
+SUPPACK.ALLOW_GROUP                     8
+#
+# Column 82 - 85        (Minimum quantity that can be ordered)
+SUPPACK.MIN_ORDER_QTY                   4
+#
+# Column 86 - 89        (Maximum quantity that can be ordered)
+SUPPACK.MAX_ORDER_QTY                   4
+#
+# Column 90 - 93        (Quantity ordered must be divisible by this quantity)
+SUPPACK.INC_ORDER_QTY                   4
+#
+#=============================================================================#
+# Case ID Record  49 char's             STORE INVENTORY MGMT          HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (CI)
+CASEID.IDENTIFIER                       2
+#
+# Column  3             (1=Add,2=Repl,3=Del,4=Upd/Add,5=Clear all for pack type,ID & quantity)
+CASEID.OPERATION                        1
+#
+# Column 4 - 5          (Result code)
+CASEID.RESULT                           2
+#
+# Column 6 - 18         (Required, execept when OP=5; GTIN, or SKU)
+CASEID.CASE_ID                          13
+#
+# Column 19 - 31        (Package ID; GTIN or SKU dpending on package type)
+CASEID.PACK_ID                          13
+#
+# Column  32            (Package type - I=Item(GTIN); S=SKU)
+CASEID.PACK_TYPE                        1
+#
+# Column 33 - 36        (Package quantity)
+CASEID.PACK_QTY                         4
+#
+# Column 37 - 49        (Optional; reporting purposes only)
+CASEID.SKU                              13
+#
+#=============================================================================#
+#=====    GROUP VIII    ======#
+#=============================================================================#
+#=============================================================================#
+# Package Allowance Record  75 char's                                 HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (AL)
+PKGALLOW.IDENTIFIER                     2
+#
+# Column  3             (1=Add,2=Del all for sup & add current,3=Del all for sup)
+PKGALLOW.OPERATION                      1
+#
+# Column 4 - 5          (Result code)
+PKGALLOW.RESULT                         2
+#
+# Column 6 - 18         (Added to pending table only)
+PKGALLOW.SKU                            13
+#
+# Column 19 - 31        (Package ID)
+PKGALLOW.PACK_ID                        13
+#
+# Column  32            (Package type - Item, SKU or composition)
+PKGALLOW.PACK_TYPE                      1
+#
+# Column 33 - 36        (Package quantity)
+PKGALLOW.PACK_QTY                       4
+#
+# Column 37 - 44        (Supplier number)
+PKGALLOW.SUPPLIER_NUMBER                8
+#
+# Column 45 - 48        (Hold spaces)
+PKGALLOW.FILLER                         4
+#
+# Column 49 - 56        (Allowance amount)
+PKGALLOW.ALLOW_AMOUNT                   8
+#
+# Column 57 - 64        (Beginning date - YYYYMMDD)
+PKGALLOW.BEGIN_DATE                     8
+#
+# Column 65 - 72        (Ending date - YYYYMMDD)
+PKGALLOW.END_DATE                       8
+#
+# Column 73 - 75        (Package type)
+PKGALLOW.TYPE                           3
+#
+#=============================================================================#
+# Composition Record  40 char's                                       HOSTED IN
+#=============================================================================#
+# Column 1 - 2          (CM)
+COMP.IDENTIFIER                         2
+#
+# Column  3             (1=Add,2=Replace,3=Delete,4=Update,5=Delete all for SKU)
+COMP.OPERATION                          1
+#
+# Column 4 - 5          (Result code)
+COMP.RESULT                             2
+#
+# Column 6 - 18         (Composition SKU)
+COMP.SKU                                13
+#
+# Column 19 - 31        (Component pack ID)
+COMP.PACK_ID                            13
+#
+# Column 32             (Component pack type - S or I)
+COMP.PACK_TYPE                          1
+#
+# Column 33 - 36        (Component pack qty)
+COMP.PACK_QTY                           4
+#
+# Column 37 - 40        (Component quantity, PACK_QTY x QTY = total)
+COMP.QTY                                4
+#
+###################################################### DO NOT REMOVE THIS LINE!
