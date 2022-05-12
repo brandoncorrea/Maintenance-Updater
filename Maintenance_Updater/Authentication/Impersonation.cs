@@ -22,7 +22,7 @@ namespace Maintenance_Updater.Authentication
             if (username.Length == 0 || password.Length == 0)
                 throw new ApplicationException($"Please Log In with your {domain} Account.");
 
-            var ok = LogonUser(username, $"{domain}.ad.publix.com", password,
+            var ok = LogonUser(username, $"{domain}.ad.example.com", password,
                            LOGON32_LOGON_INTERACTIVE, 0, out this._handle);
             if (!ok)
             {
